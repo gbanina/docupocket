@@ -15,6 +15,8 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/isprave/create', fn () => view('isprave-create'))->name('isprave.create');
+    Route::get('/isprave', fn () => view('isprave'))->name('isprave');
     Route::get('/podaci', [PodatakController::class, 'index'])->name('podaci');
     Route::post('/podaci', [PodatakController::class, 'store'])->name('podaci.store');
     Route::put('/podaci/{podatak}', [PodatakController::class, 'update'])->name('podaci.update');
