@@ -15,9 +15,24 @@ class DokumentiTest extends TestCase
 
     public function test_authenticated_user_can_view_dokumenti_pages(): void
     {
+        Storage::fake('local');
+
         $user = User::factory()->create(['email_verified_at' => now()]);
 
-        $this->actingAs($user)->get(route('dokumenti'))->assertOk()->assertSee('Dokumenti');
+        $file = UploadedFile::fake()->create('primjer.pdf', 128, 'application/pdf');
+        $path = $file->store($user->id, 'local');
+
+        Dokument::create([
+            'user_id' => $user->id,
+            'name' => 'Primjer dokumenta',
+            'category' => 'putovanje',
+            'file_path' => $path,
+            'original_name' => 'primjer.pdf',
+            'mime_type' => 'application/pdf',
+            'file_size' => 128 * 1024,
+        ]);
+
+        $this->actingAs($user)->get(route('dokumenti'))->assertOk()->assertSee('primjer.pdf');
         $this->actingAs($user)->get(route('dokumenti.create'))->assertOk()->assertSee('Dodaj dokument');
     }
 
@@ -112,6 +127,30 @@ class DokumentiTest extends TestCase
 
         $this->assertDatabaseCount('dokumenti', 0);
         Storage::disk('local')->assertMissing($path);
+    }
+
+    public function test_authenticated_user_can_preview_dokument(): void
+    {
+        Storage::fake('local');
+
+        $user = User::factory()->create(['email_verified_at' => now()]);
+        $path = $user->id . '/preview.pdf';
+        Storage::disk('local')->put($path, 'preview content');
+
+        $document = Dokument::create([
+            'user_id' => $user->id,
+            'name' => 'Za pregled',
+            'category' => 'ostalo',
+            'file_path' => $path,
+            'original_name' => 'preview.pdf',
+            'mime_type' => 'application/pdf',
+            'file_size' => 15,
+        ]);
+
+        $response = $this->actingAs($user)->get(route('dokumenti.preview', $document));
+
+        $response->assertOk();
+        $response->assertSee('preview content', false);
     }
 
     public function test_invalid_dokument_is_rejected(): void

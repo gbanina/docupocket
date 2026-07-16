@@ -108,10 +108,10 @@
                     </div>
 
                     <div class="file-actions">
-                        <button class="secondary-button" type="button" id="previewButton">Pregled</button>
-                        <button class="secondary-button" type="button" id="replaceButton">Zamijeni datoteku</button>
-                    </div>
+                    <a class="secondary-button" href="{{ route('dokumenti.preview', ['document' => $document->id]) }}" target="_blank" rel="noopener">Pregled</a>
+                    <button class="secondary-button" type="button" id="replaceButton">Zamijeni datoteku</button>
                 </div>
+            </div>
 
                 <input id="fileInput" name="file" type="file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" hidden>
             </section>
@@ -150,10 +150,6 @@
         const fileInput = document.getElementById('fileInput');
         const fileName = document.getElementById('fileName');
         const fileMeta = document.getElementById('fileMeta');
-
-        document.getElementById('previewButton').addEventListener('click', () => {
-            showToast('Otvoren pregled dokumenta.');
-        });
 
         document.getElementById('replaceButton').addEventListener('click', () => {
             fileInput.click();

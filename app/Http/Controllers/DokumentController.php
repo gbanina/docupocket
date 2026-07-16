@@ -11,6 +11,19 @@ use Illuminate\View\View;
 
 class DokumentController extends Controller
 {
+    public function index(Request $request): View
+    {
+        $documents = $request->user()
+            ->dokumenti()
+            ->latest()
+            ->get()
+            ->map(fn (Dokument $document) => $this->presentDocument($document));
+
+        return view('dokumenti', [
+            'documents' => $documents,
+        ]);
+    }
+
     public function create(): View
     {
         return view('dokumenti-create', [
@@ -59,6 +72,22 @@ class DokumentController extends Controller
             'document' => $document,
             'categories' => $this->categories(),
         ]);
+    }
+
+    public function preview(Request $request, Dokument $document)
+    {
+        abort_unless($document->user_id === $request->user()->id, 404);
+
+        abort_unless(Storage::disk('local')->exists($document->file_path), 404);
+
+        return response(
+            Storage::disk('local')->get($document->file_path),
+            200,
+            [
+                'Content-Type' => $document->mime_type,
+                'Content-Disposition' => 'inline; filename="' . $document->original_name . '"',
+            ]
+        );
     }
 
     public function update(Request $request, Dokument $document): RedirectResponse
@@ -136,5 +165,68 @@ class DokumentController extends Controller
             'name' => trim($validated['name']),
             'category' => $validated['category'],
         ];
+    }
+
+    private function presentDocument(Dokument $document): object
+    {
+        $extension = strtolower(pathinfo($document->original_name, PATHINFO_EXTENSION));
+        $typeKey = match ($extension) {
+            'pdf' => 'pdf',
+            'doc', 'docx' => 'docx',
+            'jpg', 'jpeg', 'png', 'gif', 'webp' => 'image',
+            default => 'other',
+        };
+
+        return (object) [
+            'id' => $document->id,
+            'name' => $document->name,
+            'original_name' => $document->original_name,
+            'category' => $document->category,
+            'type_key' => $typeKey,
+            'type_label' => strtoupper($extension ?: 'DAT'),
+            'file_size' => $document->file_size,
+            'file_size_label' => $this->formatFileSize($document->file_size),
+            'created_at' => $document->created_at,
+            'date_label' => $this->formatCroatianDate($document->created_at),
+            'search' => trim(implode(' ', array_filter([
+                $document->name,
+                $document->original_name,
+                $document->category,
+                $typeKey,
+            ]))),
+        ];
+    }
+
+    private function formatFileSize(int $bytes): string
+    {
+        if ($bytes >= 1024 * 1024) {
+            return number_format($bytes / 1024 / 1024, 1, ',', '.') . ' MB';
+        }
+
+        return max(1, (int) round($bytes / 1024)) . ' KB';
+    }
+
+    private function formatCroatianDate($date): string
+    {
+        $months = [
+            1 => 'siječnja',
+            2 => 'veljače',
+            3 => 'ožujka',
+            4 => 'travnja',
+            5 => 'svibnja',
+            6 => 'lipnja',
+            7 => 'srpnja',
+            8 => 'kolovoza',
+            9 => 'rujna',
+            10 => 'listopada',
+            11 => 'studenoga',
+            12 => 'prosinca',
+        ];
+
+        $day = (int) $date->format('j');
+        $month = $months[(int) $date->format('n')] ?? $date->format('F');
+        $year = $date->format('Y');
+
+        return sprintf('%d. %s %s.', $day, $month, $year);
     }
 }

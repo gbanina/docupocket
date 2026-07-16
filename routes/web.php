@@ -17,10 +17,11 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/dokumenti', fn () => view('dokumenti'))->name('dokumenti');
+    Route::get('/dokumenti', [DokumentController::class, 'index'])->name('dokumenti');
     Route::get('/dokumenti/uredi', [DokumentController::class, 'editLatest'])->name('dokumenti.edit');
     Route::get('/dokumenti/novo', [DokumentController::class, 'create'])->name('dokumenti.create');
     Route::post('/dokumenti', [DokumentController::class, 'store'])->name('dokumenti.store');
+    Route::get('/dokumenti/{document}/pregled', [DokumentController::class, 'preview'])->name('dokumenti.preview');
     Route::get('/dokumenti/{document}/uredi', [DokumentController::class, 'edit'])->name('dokumenti.documents.edit');
     Route::put('/dokumenti/{document}', [DokumentController::class, 'update'])->name('dokumenti.update');
     Route::delete('/dokumenti/{document}', [DokumentController::class, 'destroy'])->name('dokumenti.destroy');
