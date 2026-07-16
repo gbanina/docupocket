@@ -2,6 +2,8 @@
     $currentUser = auth()->user();
     $userName = $currentUser?->name ?? 'User';
     $userEmail = $currentUser?->email ?? '';
+    $isDashboard = request()->routeIs('dashboard');
+    $isProfile = request()->routeIs('profile.*');
 @endphp
 
 <aside class="sidebar">
@@ -17,7 +19,7 @@
     </div>
 
     <nav class="sidebar-nav">
-        <a class="sidebar-link active" href="#">
+        <a class="sidebar-link {{ $isDashboard ? 'active' : '' }}" href="{{ route('dashboard') }}">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <rect x="3" y="3" width="7" height="7" rx="2"/>
                 <rect x="14" y="3" width="7" height="7" rx="2"/>
@@ -52,7 +54,7 @@
         </a>
 
         <div class="sidebar-user-menu">
-            <a class="sidebar-link sidebar-user-trigger" href="{{ route('profile.edit') }}">
+            <a class="sidebar-link sidebar-user-trigger {{ $isProfile ? 'active' : '' }}" href="{{ route('profile.edit') }}">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <circle cx="12" cy="8" r="4"/>
                     <path d="M4 21a8 8 0 0 1 16 0"/>
