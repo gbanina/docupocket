@@ -119,7 +119,7 @@
                 </svg>
                 Tvoj privatni digitalni trezor
             </span>
-            <h1>Svi važni podaci uvijek pri ruci.</h1>
+            <h1>Tvoji podaci uvijek pri ruci.</h1>
         </section>
 
         <section class="section">
@@ -416,14 +416,12 @@
         </svg>
         Dokumenti
     </button>
-    <button class="nav-item" type="button" onclick="showToast('Otvoren pregled dijeljenih stavki.')">
+    <button class="nav-item" type="button" id="mobileUserTrigger">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="18" cy="5" r="3"/>
-            <circle cx="6" cy="12" r="3"/>
-            <circle cx="18" cy="19" r="3"/>
-            <path d="M8.6 10.5 15.4 6.5M8.6 13.5l6.8 4"/>
+            <circle cx="12" cy="8" r="4"/>
+            <path d="M4 21a8 8 0 0 1 16 0"/>
         </svg>
-        Dijeljeno
+        Korisnik
     </button>
 </nav>
 
@@ -449,6 +447,32 @@
     </div>
 </div>
 
+<div class="modal-backdrop" id="userMenuModal" role="dialog" aria-modal="true" aria-labelledby="userMenuTitle">
+    <div class="modal user-menu-modal">
+        <div class="user-menu-header">
+            <div>
+                <h3 id="userMenuTitle">{{ $userName }}</h3>
+                <p>{{ auth()->user()?->email }}</p>
+            </div>
+            <button class="icon-button user-menu-close" type="button" id="closeUserMenu" aria-label="Zatvori izbornik">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 6 6 18"/>
+                    <path d="M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+
+        <div class="user-menu-actions">
+            <a href="{{ route('profile.edit') }}" class="primary-button user-menu-link">Profil</a>
+
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit" class="secondary-button user-menu-link">Odjava</button>
+            </form>
+        </div>
+    </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
@@ -459,6 +483,9 @@
     const closeModal = document.getElementById('closeModal');
     const confirmShare = document.getElementById('confirmShare');
     const toast = document.getElementById('toast');
+    const mobileUserTrigger = document.getElementById('mobileUserTrigger');
+    const userMenuModal = document.getElementById('userMenuModal');
+    const closeUserMenu = document.getElementById('closeUserMenu');
     let selectedItem = '';
 
     document.querySelectorAll('.share-trigger').forEach(button => {
@@ -506,6 +533,20 @@
 
         shareModal.classList.remove('open');
         showToast(selectedItem + ' je podijeljen s ' + email + '.');
+    });
+
+    mobileUserTrigger.addEventListener('click', () => {
+        userMenuModal.classList.add('open');
+    });
+
+    closeUserMenu.addEventListener('click', () => {
+        userMenuModal.classList.remove('open');
+    });
+
+    userMenuModal.addEventListener('click', event => {
+        if (event.target === userMenuModal) {
+            userMenuModal.classList.remove('open');
+        }
     });
 
     function showToast(message) {
