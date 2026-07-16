@@ -3,29 +3,7 @@
 @section('title', config('app.name', 'DocuPocket') . ' — Dodaj ispravu')
 @section('body_class', 'isprave-create-page')
 
-@php
-    $createUserName = auth()->user()?->name ?? 'User';
-    $createUserInitials = collect(preg_split('/\s+/', trim($createUserName)))
-        ->filter()
-        ->take(2)
-        ->map(fn ($part) => mb_substr($part, 0, 1))
-        ->implode('');
-@endphp
-
 @section('content')
-    <header class="topbar">
-        <a href="{{ route('isprave') }}" class="back-link">
-            <span class="back-icon">
-                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="m15 18-6-6 6-6"/>
-                </svg>
-            </span>
-            Isprave
-        </a>
-
-        <div class="avatar">{{ $createUserInitials ?: 'GB' }}</div>
-    </header>
-
     <section class="page-heading">
         <div>
             <span class="eyebrow">
@@ -49,7 +27,20 @@
         </span>
     </section>
 
-    <form id="documentForm">
+    @if ($errors->any())
+        <div class="danger-zone" style="margin-bottom: 18px;">
+            <h3>Provjeri unesene podatke</h3>
+            <p>Forma se nije mogla spremiti. Ispravi označena polja i pokušaj ponovno.</p>
+            <ul style="margin: 0; padding-left: 18px; color: var(--danger); font-size: 12px; line-height: 1.6;">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    <form id="documentForm" method="POST" action="{{ route('isprave.store') }}" enctype="multipart/form-data">
+        @csrf
         <div class="form-card">
             <section class="form-section">
                 <div class="section-title">
@@ -60,38 +51,18 @@
                 <div class="field-grid two-cols">
                     <div class="field">
                         <label for="name">Naziv isprave</label>
-                        <input id="name" name="name" type="text" placeholder="Osobna iskaznica" required>
+                        <input id="name" name="name" type="text" value="{{ old('name') }}" placeholder="Osobna iskaznica" required>
                     </div>
 
                     <div class="field">
                         <label for="category">Kategorija</label>
                         <select id="category" name="category">
-                            <option value="identitet">Identitet</option>
-                            <option value="vozilo">Vožnja</option>
-                            <option value="zdravstvo">Zdravstvo</option>
-                            <option value="putovanje">Putovanje</option>
-                            <option value="ostalo" selected>Ostalo</option>
+                            <option value="identitet" @selected(old('category') === 'identitet')>Identitet</option>
+                            <option value="vozilo" @selected(old('category') === 'vozilo')>Vožnja</option>
+                            <option value="zdravstvo" @selected(old('category') === 'zdravstvo')>Zdravstvo</option>
+                            <option value="putovanje" @selected(old('category') === 'putovanje')>Putovanje</option>
+                            <option value="ostalo" @selected(old('category', 'ostalo') === 'ostalo')>Ostalo</option>
                         </select>
-                    </div>
-
-                    <div class="field">
-                        <label for="documentNumber">Broj isprave</label>
-                        <input id="documentNumber" name="document_number" type="text" placeholder="123456789" required>
-                    </div>
-
-                    <div class="field">
-                        <label for="issuer">Izdavatelj</label>
-                        <input id="issuer" name="issuer" type="text" placeholder="Republika Hrvatska">
-                    </div>
-
-                    <div class="field">
-                        <label for="issuedAt">Datum izdavanja</label>
-                        <input id="issuedAt" name="issued_at" type="date">
-                    </div>
-
-                    <div class="field">
-                        <label for="expiresAt">Vrijedi do</label>
-                        <input id="expiresAt" name="expires_at" type="date">
                     </div>
                 </div>
             </section>
@@ -112,14 +83,15 @@
                                     <circle cx="8.5" cy="10" r="1.5"/>
                                     <path d="m6 16 4-4 3 3 2-2 3 3"/>
                                 </svg>
-                                <strong>Nema slike</strong>
-                                <span>Učitaj ili snimi prednju stranu</span>
+                                <strong id="frontImageName">Nema slike</strong>
+                                <span id="frontImageMeta">Učitaj ili snimi prednju stranu</span>
                             </div>
                         </div>
 
+                        <input id="frontImageInput" name="front_image" type="file" accept="image/*" capture="environment" hidden>
                         <div class="upload-actions">
-                            <button class="secondary-button" type="button" onclick="showToast('Otvoren odabir prednje fotografije.')">Učitaj</button>
-                            <button class="secondary-button" type="button" onclick="showToast('Otvorena kamera za prednju stranu.')">Snimi</button>
+                            <button class="secondary-button" type="button" data-target="frontImageInput">Učitaj</button>
+                            <button class="secondary-button" type="button" data-target="frontImageInput">Snimi</button>
                         </div>
                     </article>
 
@@ -131,59 +103,17 @@
                                     <rect x="3" y="5" width="18" height="14" rx="3"/>
                                     <path d="M7 9h10M7 13h7M7 16h5"/>
                                 </svg>
-                                <strong>Nema slike</strong>
-                                <span>Učitaj ili snimi stražnju stranu</span>
+                                <strong id="backImageName">Nema slike</strong>
+                                <span id="backImageMeta">Učitaj ili snimi stražnju stranu</span>
                             </div>
                         </div>
 
+                        <input id="backImageInput" name="back_image" type="file" accept="image/*" capture="environment" hidden>
                         <div class="upload-actions">
-                            <button class="secondary-button" type="button" onclick="showToast('Otvoren odabir stražnje fotografije.')">Učitaj</button>
-                            <button class="secondary-button" type="button" onclick="showToast('Otvorena kamera za stražnju stranu.')">Snimi</button>
+                            <button class="secondary-button" type="button" data-target="backImageInput">Učitaj</button>
+                            <button class="secondary-button" type="button" data-target="backImageInput">Snimi</button>
                         </div>
                     </article>
-                </div>
-            </section>
-
-            <section class="form-section">
-                <div class="section-title">
-                    <h2>Podsjetnik isteka</h2>
-                    <p>Pošalji obavijest prije nego što isprava prestane vrijediti.</p>
-                </div>
-
-                <div class="reminder-card">
-                    <div class="reminder-icon">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M18 8a6 6 0 1 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/>
-                            <path d="M10 21h4"/>
-                        </svg>
-                    </div>
-
-                    <div>
-                        <strong>Podsjetnik prije isteka</strong>
-                        <span>Obavijest će biti poslana na email povezan s korisničkim računom.</span>
-                    </div>
-                </div>
-
-                <div class="switch-row">
-                    <div class="switch-copy">
-                        <strong>Uključi podsjetnik</strong>
-                        <span>Pošalji upozorenje 90 dana prije isteka.</span>
-                    </div>
-
-                    <label class="switch">
-                        <input id="reminderEnabled" type="checkbox" checked>
-                        <span class="switch-slider"></span>
-                    </label>
-                </div>
-
-                <div class="field" style="margin-top:15px;">
-                    <label for="reminderDays">Broj dana prije isteka</label>
-                    <select id="reminderDays" name="reminder_days">
-                        <option value="30">30 dana</option>
-                        <option value="60">60 dana</option>
-                        <option value="90" selected>90 dana</option>
-                        <option value="180">180 dana</option>
-                    </select>
                 </div>
             </section>
 
@@ -195,13 +125,13 @@
 
                 <div class="field">
                     <label for="note">Napomena</label>
-                    <textarea id="note" name="note" placeholder="Dodaj napomenu..."></textarea>
+                    <textarea id="note" name="note" placeholder="Dodaj napomenu...">{{ old('note') }}</textarea>
                 </div>
             </section>
         </div>
 
         <div class="form-actions">
-            <a class="secondary-button" href="{{ route('isprave') }}">Odustani</a>
+            <a class="secondary-button" id="cancelButton" href="{{ route('isprave') }}">Odustani</a>
             <button class="primary-button" type="submit">Spremi ispravu</button>
         </div>
     </form>
@@ -216,20 +146,57 @@
 
 @push('scripts')
     <script>
-        const form = document.getElementById('documentForm');
-        const reminderEnabled = document.getElementById('reminderEnabled');
-        const reminderDays = document.getElementById('reminderDays');
         const toast = document.getElementById('toast');
+        const fileButtons = document.querySelectorAll('[data-target]');
+        const fileInputs = {
+            frontImageInput: document.getElementById('frontImageInput'),
+            backImageInput: document.getElementById('backImageInput'),
+        };
+        const fileLabels = {
+            frontImageInput: {
+                name: document.getElementById('frontImageName'),
+                meta: document.getElementById('frontImageMeta'),
+            },
+            backImageInput: {
+                name: document.getElementById('backImageName'),
+                meta: document.getElementById('backImageMeta'),
+            },
+        };
 
-        reminderEnabled.addEventListener('change', () => {
-            reminderDays.disabled = !reminderEnabled.checked;
+        fileButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const input = fileInputs[button.dataset.target];
+
+                if (input) {
+                    input.click();
+                }
+            });
         });
 
-        reminderDays.disabled = !reminderEnabled.checked;
+        Object.entries(fileInputs).forEach(([key, input]) => {
+            input.addEventListener('change', () => {
+                const file = input.files?.[0];
+                const label = fileLabels[key];
 
-        form.addEventListener('submit', event => {
-            event.preventDefault();
-            showToast('Isprava je spremljena.');
+                if (!label) {
+                    return;
+                }
+
+                if (!file) {
+                    label.name.textContent = 'Nema slike';
+                    label.meta.textContent = key === 'frontImageInput'
+                        ? 'Učitaj ili snimi prednju stranu'
+                        : 'Učitaj ili snimi stražnju stranu';
+                    return;
+                }
+
+                label.name.textContent = file.name;
+                label.meta.textContent = `${Math.round(file.size / 1024)} KB`;
+            });
+        });
+
+        document.getElementById('cancelButton').addEventListener('click', () => {
+            window.location.href = @json(route('isprave'));
         });
 
         function showToast(message) {

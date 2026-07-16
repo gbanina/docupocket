@@ -4,6 +4,7 @@
     $userEmail = $currentUser?->email ?? '';
     $isDashboard = request()->routeIs('dashboard');
     $isIsprave = request()->routeIs('isprave');
+    $isDokumenti = request()->routeIs('dokumenti');
     $isPodaci = request()->routeIs('podaci');
     $isProfile = request()->routeIs('profile.*');
 @endphp
@@ -47,7 +48,7 @@
             Isprave
         </a>
 
-        <a class="sidebar-link" href="{{ route('isprave') }}#dokumenti">
+        <a class="sidebar-link {{ $isDokumenti ? 'active' : '' }}" href="{{ route('dokumenti') }}">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M7 3h7l4 4v14H7z"/>
                 <path d="M14 3v5h5"/>

@@ -35,4 +35,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Podatak::class);
     }
+
+    public function isprave(): HasMany
+    {
+        return $this->hasMany(Isprava::class);
+    }
 }

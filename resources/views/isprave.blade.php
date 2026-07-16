@@ -333,7 +333,7 @@
     @include('layouts.partials.user-menu-modal')
     @include('layouts.partials.share-modal')
 
-    <div class="toast" id="toast"></div>
+    <div class="toast" id="toast" data-status="{{ session('status') }}"></div>
 @endsection
 
 @push('scripts')
@@ -446,6 +446,10 @@
             window.toastTimer = setTimeout(() => {
                 toast.classList.remove('show');
             }, 2600);
+        }
+
+        if (toast.dataset.status) {
+            showToast(toast.dataset.status);
         }
     </script>
 @endpush

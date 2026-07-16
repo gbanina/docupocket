@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\PodatakController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\IspravaController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -15,7 +16,11 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/isprave/create', fn () => view('isprave-create'))->name('isprave.create');
+    Route::get('/dokumenti', fn () => view('dokumenti'))->name('dokumenti');
+    Route::get('/dokumenti/uredi', fn () => view('dokumenti-edit'))->name('dokumenti.edit');
+    Route::get('/dokumenti/novo', fn () => view('dokumenti-create'))->name('dokumenti.create');
+    Route::get('/isprave/create', [IspravaController::class, 'create'])->name('isprave.create');
+    Route::post('/isprave', [IspravaController::class, 'store'])->name('isprave.store');
     Route::get('/isprave', fn () => view('isprave'))->name('isprave');
     Route::get('/podaci', [PodatakController::class, 'index'])->name('podaci');
     Route::post('/podaci', [PodatakController::class, 'store'])->name('podaci.store');

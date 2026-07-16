@@ -37,6 +37,10 @@ body {
     font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
+a {
+    text-decoration: none;
+}
+
 button,
 input {
     font: inherit;
@@ -482,6 +486,319 @@ button {
     background: rgba(255,255,255,0.6);
 }
 
+.dokumenti-page .page-header {
+    display: grid;
+    gap: 16px;
+    margin-bottom: 22px;
+}
+
+.dokumenti-page .page-header p {
+    max-width: 680px;
+}
+
+.dokumenti-page .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.dokumenti-page .summary-card {
+    padding: 16px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+    box-shadow: var(--shadow);
+}
+
+.dokumenti-page .summary-card span {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.dokumenti-page .summary-card strong {
+    display: block;
+    font-size: 24px;
+    letter-spacing: -0.04em;
+}
+
+.dokumenti-page .summary-card small {
+    display: block;
+    margin-top: 5px;
+    color: var(--muted);
+    font-size: 10px;
+}
+
+.dokumenti-page .toolbar {
+    display: grid;
+    gap: 12px;
+    padding: 14px;
+    margin-bottom: 20px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    background: rgba(255,255,255,0.9);
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(12px);
+}
+
+.dokumenti-page .search-wrap {
+    position: relative;
+}
+
+.dokumenti-page .search-wrap input {
+    width: 100%;
+    height: 48px;
+    padding: 0 14px 0 44px;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    outline: none;
+    color: var(--text);
+    background: #fafbfe;
+}
+
+.dokumenti-page .search-wrap input:focus,
+.dokumenti-page .sort-select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px var(--primary-soft);
+}
+
+.dokumenti-page .search-icon {
+    position: absolute;
+    top: 50%;
+    left: 15px;
+    color: var(--muted);
+    transform: translateY(-50%);
+}
+
+.dokumenti-page .toolbar-row {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.dokumenti-page .toolbar-row::-webkit-scrollbar {
+    display: none;
+}
+
+.dokumenti-page .filter-chip {
+    flex: 0 0 auto;
+    min-height: 36px;
+    padding: 0 13px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    color: var(--muted);
+    background: white;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.dokumenti-page .filter-chip.active {
+    border-color: transparent;
+    color: var(--primary);
+    background: var(--primary-soft);
+}
+
+.dokumenti-page .sort-select {
+    height: 42px;
+    padding: 0 13px;
+    border: 1px solid var(--line);
+    border-radius: 13px;
+    outline: none;
+    color: var(--text);
+    background: white;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.dokumenti-page .section-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.dokumenti-page .section-heading h2 {
+    margin: 0;
+    font-size: 20px;
+    letter-spacing: -0.03em;
+}
+
+.dokumenti-page .section-heading p {
+    margin: 4px 0 0;
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.dokumenti-page .view-toggle {
+    display: flex;
+    gap: 6px;
+    padding: 4px;
+    border-radius: 12px;
+    background: var(--surface-soft);
+}
+
+.dokumenti-page .view-toggle button {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border: 0;
+    border-radius: 9px;
+    color: var(--muted);
+    background: transparent;
+}
+
+.dokumenti-page .view-toggle button.active {
+    color: var(--primary);
+    background: white;
+    box-shadow: 0 3px 10px rgba(31,43,71,0.08);
+}
+
+.dokumenti-page .documents-grid {
+    display: grid;
+    gap: 12px;
+}
+
+.dokumenti-page .documents-grid.grid-view {
+    gap: 12px;
+}
+
+.dokumenti-page .document-card {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 13px;
+    align-items: center;
+    padding: 15px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+    box-shadow: var(--shadow);
+}
+
+.dokumenti-page .document-card.hidden {
+    display: none;
+}
+
+.dokumenti-page .file-icon {
+    display: grid;
+    place-items: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 15px;
+    color: var(--danger);
+    background: var(--danger-soft);
+}
+
+.dokumenti-page .file-icon.docx {
+    color: var(--blue, #3f6fc5);
+    background: var(--blue-soft, #edf3ff);
+}
+
+.dokumenti-page .file-icon.image {
+    color: var(--success);
+    background: var(--success-soft);
+}
+
+.dokumenti-page .file-icon.zip {
+    color: var(--warning);
+    background: var(--warning-soft);
+}
+
+.dokumenti-page .file-main {
+    min-width: 0;
+}
+
+.dokumenti-page .title-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+}
+
+.dokumenti-page .title-row strong {
+    display: block;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 14px;
+}
+
+.dokumenti-page .shared-badge {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 7px;
+    border-radius: 999px;
+    color: var(--success);
+    background: var(--success-soft);
+    font-size: 9px;
+    font-weight: 800;
+}
+
+.dokumenti-page .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 12px;
+    margin-top: 6px;
+    color: var(--muted);
+    font-size: 10px;
+}
+
+.dokumenti-page .description {
+    margin-top: 7px;
+    color: var(--muted);
+    font-size: 11px;
+    line-height: 1.45;
+}
+
+.dokumenti-page .card-actions {
+    display: flex;
+    gap: 7px;
+}
+
+.dokumenti-page .icon-button {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    color: var(--text);
+    background: var(--surface-soft);
+}
+
+.dokumenti-page .icon-button:hover {
+    color: var(--primary);
+    background: var(--primary-soft);
+}
+
+.dokumenti-page .empty-state {
+    display: none;
+    padding: 38px 20px;
+    border: 1px dashed var(--line);
+    border-radius: var(--radius-xl);
+    color: var(--muted);
+    text-align: center;
+    background: rgba(255,255,255,0.6);
+}
+
+.dokumenti-page .empty-state svg {
+    display: block;
+    margin: 0 auto 12px;
+    color: var(--primary);
+}
+
+.dokumenti-page .empty-state strong {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--text);
+}
+
 .isprave-create-page .main {
     width: 100%;
     max-width: 980px;
@@ -843,6 +1160,381 @@ button {
     line-height: 1.55;
 }
 
+.dokumenti-edit-page .main {
+    width: 100%;
+    max-width: 980px;
+    padding: 30px 16px 100px;
+}
+
+.dokumenti-edit-page .page-heading {
+    display: grid;
+    gap: 16px;
+    margin-bottom: 22px;
+}
+
+.dokumenti-edit-page .page-heading-copy {
+    display: grid;
+    gap: 10px;
+}
+
+.dokumenti-edit-page .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    width: fit-content;
+    color: var(--text);
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.dokumenti-edit-page .back-icon {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--line);
+    border-radius: 13px;
+    background: #fff;
+    box-shadow: var(--shadow);
+}
+
+.dokumenti-edit-page .back-icon svg {
+    width: 14px;
+    height: 14px;
+}
+
+.dokumenti-edit-page .page-heading h1 {
+    margin: 0;
+    font-size: clamp(30px, 8vw, 46px);
+    line-height: 1.04;
+    letter-spacing: -0.05em;
+}
+
+.dokumenti-edit-page .page-heading p {
+    max-width: 660px;
+    margin: 10px 0 0;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.65;
+}
+
+.dokumenti-edit-page .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    width: max-content;
+    padding: 8px 11px;
+    border-radius: 999px;
+    color: var(--success);
+    background: var(--success-soft);
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.dokumenti-edit-page .form-card {
+    padding: 20px;
+    border: 1px solid var(--line);
+    border-radius: 26px;
+    background: rgba(255, 255, 255, 0.92);
+    box-shadow: var(--shadow);
+}
+
+.dokumenti-edit-page .form-section + .form-section {
+    margin-top: 28px;
+    padding-top: 26px;
+    border-top: 1px solid var(--line);
+}
+
+.dokumenti-edit-page .section-title {
+    margin-bottom: 16px;
+}
+
+.dokumenti-edit-page .section-title-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.dokumenti-edit-page .section-title h2 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.dokumenti-edit-page .section-title .icon-button {
+    flex: 0 0 auto;
+    width: 42px;
+    height: 42px;
+}
+
+.dokumenti-edit-page .section-title p {
+    margin: 5px 0 0;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.55;
+}
+
+.dokumenti-edit-page .field-grid {
+    display: grid;
+    gap: 15px;
+}
+
+.dokumenti-edit-page .field {
+    display: grid;
+    gap: 8px;
+    margin-bottom: 0;
+}
+
+.dokumenti-edit-page .field label {
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.dokumenti-edit-page .field small {
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.dokumenti-edit-page input,
+.dokumenti-edit-page select,
+.dokumenti-edit-page textarea {
+    width: 100%;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    outline: none;
+    color: var(--text);
+    background: #fafbfe;
+}
+
+.dokumenti-edit-page input,
+.dokumenti-edit-page select {
+    height: 50px;
+    padding: 0 14px;
+}
+
+.dokumenti-edit-page textarea {
+    min-height: 110px;
+    padding: 13px 14px;
+    resize: vertical;
+}
+
+.dokumenti-edit-page input:focus,
+.dokumenti-edit-page select:focus,
+.dokumenti-edit-page textarea:focus {
+    border-color: var(--primary);
+    background: #fff;
+    box-shadow: 0 0 0 4px var(--primary-soft);
+}
+
+.dokumenti-edit-page .file-card {
+    display: grid;
+    gap: 14px;
+    padding: 16px;
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    background: #fff;
+    box-shadow: none;
+}
+
+.dokumenti-edit-page .file-main {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-width: 0;
+}
+
+.dokumenti-edit-page .file-icon {
+    flex: 0 0 auto;
+    display: grid;
+    place-items: center;
+    width: 58px;
+    height: 58px;
+    border-radius: 17px;
+    color: var(--danger);
+    background: var(--danger-soft);
+}
+
+.dokumenti-edit-page .file-copy {
+    min-width: 0;
+}
+
+.dokumenti-edit-page .file-copy strong {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-bottom: 6px;
+    font-size: 15px;
+}
+
+.dokumenti-edit-page .file-copy span {
+    display: block;
+    color: var(--muted);
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+.dokumenti-edit-page .file-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 9px;
+}
+
+.dokumenti-edit-page .primary-button,
+.dokumenti-edit-page .secondary-button,
+.dokumenti-edit-page .danger-button {
+    min-height: 46px;
+    border: 0;
+    border-radius: 14px;
+    font-weight: 800;
+}
+
+.dokumenti-edit-page .primary-button {
+    padding: 0 17px;
+    color: #fff;
+    background: var(--primary);
+    box-shadow: 0 10px 20px rgba(98, 93, 245, 0.22);
+}
+
+.dokumenti-edit-page .primary-button:hover {
+    background: var(--primary-dark);
+}
+
+.dokumenti-edit-page .secondary-button {
+    padding: 17px;
+    color: var(--text);
+    background: var(--surface-soft);
+}
+
+.dokumenti-edit-page .danger-button {
+    padding: 0 17px;
+    color: var(--danger);
+    background: var(--danger-soft);
+}
+
+.dokumenti-edit-page .sharing-list {
+    display: grid;
+    gap: 10px;
+}
+
+.dokumenti-edit-page .sharing-item {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 12px;
+    align-items: center;
+    padding: 13px;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: #fff;
+}
+
+.dokumenti-edit-page .share-avatar {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    color: #fff;
+    background: linear-gradient(145deg, var(--primary), #8d89ff);
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.dokumenti-edit-page .share-copy {
+    min-width: 0;
+}
+
+.dokumenti-edit-page .share-copy strong {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-bottom: 4px;
+    font-size: 13px;
+}
+
+.dokumenti-edit-page .share-copy span {
+    color: var(--muted);
+    font-size: 10px;
+}
+
+.dokumenti-edit-page .remove-share {
+    border: 0;
+    color: var(--danger);
+    background: transparent;
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.dokumenti-edit-page .security-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 13px;
+    padding: 15px;
+    border: 1px solid #dcd9ff;
+    border-radius: 17px;
+    background: linear-gradient(135deg, #f3f2ff, #fff);
+}
+
+.dokumenti-edit-page .security-icon {
+    flex: 0 0 auto;
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    color: var(--primary);
+    background: var(--primary-soft);
+}
+
+.dokumenti-edit-page .security-card strong {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 13px;
+}
+
+.dokumenti-edit-page .security-card span {
+    color: var(--muted);
+    font-size: 11px;
+    line-height: 1.55;
+}
+
+.dokumenti-edit-page .danger-zone {
+    padding: 16px;
+    border: 1px solid #ffd8d8;
+    border-radius: 17px;
+    background: #fff8f8;
+}
+
+.dokumenti-edit-page .danger-zone h3 {
+    margin: 0 0 5px;
+    color: var(--danger);
+    font-size: 15px;
+}
+
+.dokumenti-edit-page .danger-zone p {
+    margin: 0 0 14px;
+    color: var(--muted);
+    font-size: 11px;
+    line-height: 1.55;
+}
+
+.dokumenti-edit-page .form-actions {
+    position: sticky;
+    bottom: 12px;
+    z-index: 10;
+    display: grid;
+    grid-template-columns: 1fr 1.35fr;
+    gap: 10px;
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid rgba(228, 233, 241, 0.92);
+    border-radius: 19px;
+    background: rgba(255, 255, 255, 0.92);
+    box-shadow: 0 16px 38px rgba(31, 43, 71, 0.15);
+    backdrop-filter: blur(14px);
+}
+
 .security-banner {
     display: flex;
     align-items: flex-start;
@@ -1039,7 +1731,6 @@ button {
 
 .document-card {
     overflow: hidden;
-    min-height: 286px;
     border-radius: var(--radius-xl);
     scroll-snap-align: start;
 }
@@ -1505,6 +2196,42 @@ button {
         backdrop-filter: none;
     }
 
+    .dokumenti-page .page-header {
+        grid-template-columns: 1fr auto;
+        align-items: end;
+    }
+
+    .dokumenti-page .summary-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .dokumenti-page .toolbar {
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+    }
+
+    .dokumenti-page .documents-grid.grid-view {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .dokumenti-page .documents-grid.grid-view .document-card {
+        grid-template-columns: 1fr auto;
+        align-items: start;
+    }
+
+    .dokumenti-page .documents-grid.grid-view .file-icon {
+        grid-row: 1;
+    }
+
+    .dokumenti-page .documents-grid.grid-view .file-main {
+        grid-column: 1 / -1;
+    }
+
+    .dokumenti-edit-page .page-heading {
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: end;
+    }
+
     .stats-grid {
         grid-template-columns: repeat(4, minmax(0, 1fr));
     }
@@ -1619,11 +2346,33 @@ button {
         padding: 36px 44px 70px;
     }
 
+    .dokumenti-edit-page .main {
+        margin: 0 auto;
+        padding: 36px 44px 70px;
+    }
+
     .isprave-page .documents-grid {
         grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 
+    .dokumenti-page .main {
+        max-width: 1280px;
+        margin: 0;
+        padding: 36px 44px 70px;
+    }
+
     .section:first-child {
         margin-top: 0;
+    }
+}
+
+@media (max-width: 560px) {
+    .dokumenti-page .document-card {
+        grid-template-columns: auto 1fr;
+    }
+
+    .dokumenti-page .card-actions {
+        grid-column: 1 / -1;
+        justify-content: flex-end;
     }
 }

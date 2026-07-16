@@ -10,4 +10,13 @@ return [
             'ostalo' => 'Ostalo',
         ],
     ],
+    'isprave' => [
+        'categories' => [
+            'identitet' => 'Identitet',
+            'vozilo' => 'Vožnja',
+            'zdravstvo' => 'Zdravstvo',
+            'putovanje' => 'Putovanje',
+            'ostalo' => 'Ostalo',
+        ],
+    ],
 ];
