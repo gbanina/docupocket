@@ -732,8 +732,8 @@ button {
 
 @media (min-width: 760px) {
     .main {
-        max-width: 1080px;
-        margin: auto;
+        max-width: none;
+        margin: 0;
         padding: 28px 28px 70px;
     }
 
@@ -836,16 +836,9 @@ button {
     }
 
     .main {
-        max-width: 1220px;
+        max-width: none;
         margin: 0;
         padding: 36px 44px 70px;
-    }
-
-    .desktop-grid {
-        display: grid;
-        grid-template-columns: minmax(0, 1.35fr) minmax(320px, 0.65fr);
-        gap: 24px;
-        align-items: start;
     }
 
     .section:first-child {
