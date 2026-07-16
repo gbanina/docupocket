@@ -3,6 +3,10 @@
 @section('title', config('app.name', 'DocuPocket') . ' — Novi dokument')
 @section('body_class', 'dokumenti-edit-page')
 
+@php
+    $categories = $categories ?? config('docupocket.dokumenti.categories', []);
+@endphp
+
 @section('content')
     <section class="page-heading">
         <div class="page-heading-copy">
@@ -27,7 +31,19 @@
         </span>
     </section>
 
-    <form id="documentCreateForm" method="POST">
+    @if ($errors->any())
+        <div class="danger-zone" style="margin-bottom: 18px;">
+            <h3>Provjeri unesene podatke</h3>
+            <p>Forma se nije mogla spremiti. Ispravi označena polja i pokušaj ponovno.</p>
+            <ul style="margin: 0; padding-left: 18px; color: var(--danger); font-size: 12px; line-height: 1.6;">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    <form id="documentCreateForm" method="POST" action="{{ route('dokumenti.store') }}" enctype="multipart/form-data">
         @csrf
 
         <div class="form-card">
@@ -51,19 +67,16 @@
                 <div class="field-grid two-cols">
                     <div class="field">
                         <label for="name">Naziv dokumenta</label>
-                        <input id="name" name="name" type="text" value="" placeholder="Polica putnog osiguranja" required>
+                        <input id="name" name="name" type="text" value="{{ old('name') }}" placeholder="Polica putnog osiguranja" required>
                     </div>
 
                     <div class="field">
                         <label for="category">Kategorija</label>
-                        <select id="category" name="category">
-                            <option value="" selected>Odaberi kategoriju</option>
-                            <option>Putovanje</option>
-                            <option>Osobno</option>
-                            <option>Zdravstvo</option>
-                            <option>Financije</option>
-                            <option>Ugovori</option>
-                            <option>Ostalo</option>
+                        <select id="category" name="category" required>
+                            <option value="" @selected(old('category') === null || old('category') === '')>Odaberi kategoriju</option>
+                            @foreach ($categories as $value => $label)
+                                <option value="{{ $value }}" @selected(old('category') === $value)>{{ $label }}</option>
+                            @endforeach
                         </select>
                     </div>
                 </div>
@@ -97,7 +110,7 @@
                     </div>
                 </div>
 
-                <input id="fileInput" type="file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" hidden>
+                <input id="fileInput" name="file" type="file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" required hidden>
             </section>
         </div>
 
@@ -118,7 +131,6 @@
 @push('scripts')
     <script>
         const toast = document.getElementById('toast');
-        const form = document.getElementById('documentCreateForm');
         const fileInput = document.getElementById('fileInput');
         const fileName = document.getElementById('fileName');
         const fileMeta = document.getElementById('fileMeta');
@@ -145,26 +157,7 @@
 
         document.getElementById('cancelButton').addEventListener('click', (event) => {
             event.preventDefault();
-            showToast('Unos je poništen.');
-            window.setTimeout(() => {
-                window.location.href = @json(route('dokumenti'));
-            }, 180);
-        });
-
-        form.addEventListener('submit', (event) => {
-            event.preventDefault();
-
-            if (!document.getElementById('name').value.trim()) {
-                showToast('Unesi naziv dokumenta.');
-                return;
-            }
-
-            if (!document.getElementById('category').value) {
-                showToast('Odaberi kategoriju dokumenta.');
-                return;
-            }
-
-            showToast('Dokument je spreman za spremanje.');
+            window.location.href = @json(route('dokumenti'));
         });
 
         function showToast(message) {

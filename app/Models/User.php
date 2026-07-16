@@ -40,4 +40,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Isprava::class);
     }
+
+    public function dokumenti(): HasMany
+    {
+        return $this->hasMany(Dokument::class);
+    }
 }

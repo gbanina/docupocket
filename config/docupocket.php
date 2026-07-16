@@ -19,4 +19,14 @@ return [
             'ostalo' => 'Ostalo',
         ],
     ],
+    'dokumenti' => [
+        'categories' => [
+            'putovanje' => 'Putovanje',
+            'osobno' => 'Osobno',
+            'zdravstvo' => 'Zdravstvo',
+            'financije' => 'Financije',
+            'ugovori' => 'Ugovori',
+            'ostalo' => 'Ostalo',
+        ],
+    ],
 ];
