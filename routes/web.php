@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PodatakController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -13,9 +14,11 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/podaci', function () {
-    return view('podaci');
-})->middleware(['auth', 'verified'])->name('podaci');
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/podaci', [PodatakController::class, 'index'])->name('podaci');
+    Route::post('/podaci', [PodatakController::class, 'store'])->name('podaci.store');
+    Route::put('/podaci/{podatak}', [PodatakController::class, 'update'])->name('podaci.update');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

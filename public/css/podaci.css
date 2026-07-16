@@ -553,4 +553,8 @@
         margin: 0;
         padding: 36px 44px 70px;
     }
+
+    .podaci-page .summary-grid {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
 }

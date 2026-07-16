@@ -6,6 +6,15 @@
 
 @php
     $dataCategories = config('docupocket.data.categories', []);
+    $savedPodaci = collect($savedPodaci ?? []);
+    $summary = array_merge([
+        'total' => 0,
+        'identitet' => 0,
+        'zdravstvo' => 0,
+        'financije' => 0,
+        'kreditne_kartice' => 0,
+    ], $summary ?? []);
+    $shouldOpenPodaciModal = $errors->any() || old('label') || old('value') || old('category');
 @endphp
 
 @push('head')
@@ -59,22 +68,27 @@
         <section class="summary-grid">
             <article class="summary-card">
                 <span>Ukupno podataka</span>
-                <strong id="totalCount">8</strong>
+                <strong id="totalCount">{{ $summary['total'] }}</strong>
             </article>
 
             <article class="summary-card">
                 <span>Identitet</span>
-                <strong>3</strong>
+                <strong>{{ $summary['identitet'] }}</strong>
             </article>
 
             <article class="summary-card">
                 <span>Zdravstvo</span>
-                <strong>2</strong>
+                <strong>{{ $summary['zdravstvo'] }}</strong>
             </article>
 
             <article class="summary-card">
                 <span>Financije</span>
-                <strong>2</strong>
+                <strong>{{ $summary['financije'] }}</strong>
+            </article>
+
+            <article class="summary-card">
+                <span>Kreditne kartice</span>
+                <strong>{{ $summary['kreditne_kartice'] }}</strong>
             </article>
         </section>
 
@@ -106,12 +120,13 @@
                             </svg>
                         </button>
 
-                        <button class="icon-button edit-button" type="button" data-label="OIB" data-value="12345678901" aria-label="Uredi OIB">
+                        <button class="icon-button edit-button" type="button" data-label="OIB" data-value="12345678901" data-category="identitet" aria-label="Uredi OIB">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M12 20h9"/>
-                                <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>
+                                <path d="M12 20h9"></path>
+                                <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"></path>
                             </svg>
                         </button>
+
                     </div>
                 </article>
 
@@ -134,7 +149,7 @@
                             </svg>
                         </button>
 
-                        <button class="icon-button edit-button" type="button" data-label="Broj osobne iskaznice" data-value="123456789" aria-label="Uredi broj osobne">
+                        <button class="icon-button edit-button" type="button" data-label="Broj osobne iskaznice" data-value="123456789" data-category="identitet" aria-label="Uredi broj osobne">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M12 20h9"/>
                                 <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>
@@ -162,7 +177,7 @@
                             </svg>
                         </button>
 
-                        <button class="icon-button edit-button" type="button" data-label="Broj putovnice" data-value="PA0827341" aria-label="Uredi broj putovnice">
+                        <button class="icon-button edit-button" type="button" data-label="Broj putovnice" data-value="PA0827341" data-category="identitet" aria-label="Uredi broj putovnice">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M12 20h9"/>
                                 <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>
@@ -190,7 +205,7 @@
                             </svg>
                         </button>
 
-                        <button class="icon-button edit-button" type="button" data-label="MBO zdravstvenog osiguranja" data-value="908172635" aria-label="Uredi MBO">
+                        <button class="icon-button edit-button" type="button" data-label="MBO zdravstvenog osiguranja" data-value="908172635" data-category="zdravstvo" aria-label="Uredi MBO">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M12 20h9"/>
                                 <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>
@@ -218,7 +233,7 @@
                             </svg>
                         </button>
 
-                        <button class="icon-button edit-button" type="button" data-label="Broj zdravstvene iskaznice" data-value="HR-2026-817265" aria-label="Uredi broj zdravstvene">
+                        <button class="icon-button edit-button" type="button" data-label="Broj zdravstvene iskaznice" data-value="HR-2026-817265" data-category="zdravstvo" aria-label="Uredi broj zdravstvene">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M12 20h9"/>
                                 <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>
@@ -246,7 +261,7 @@
                             </svg>
                         </button>
 
-                        <button class="icon-button edit-button" type="button" data-label="IBAN" data-value="HR1223600001234567890" aria-label="Uredi IBAN">
+                        <button class="icon-button edit-button" type="button" data-label="IBAN" data-value="HR1223600001234567890" data-category="financije" aria-label="Uredi IBAN">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M12 20h9"/>
                                 <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>
@@ -255,7 +270,7 @@
                     </div>
                 </article>
 
-                <article class="data-card" data-category="financije" data-search="broj kartice 4539 8421 7123 9084">
+                <article class="data-card" data-category="kreditna-kartica" data-search="broj kartice 4539 8421 7123 9084">
                     <div>
                         <div class="data-label">
                             <span class="category-dot"></span>
@@ -274,10 +289,17 @@
                             </svg>
                         </button>
 
-                        <button class="icon-button copy-button" type="button" data-copy="4539842171239084" aria-label="Kopiraj broj kartice">
+                        <button class="icon-button copy-button" type="button" data-copy="4539-8421-7123-9084" aria-label="Kopiraj broj kartice">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <rect x="9" y="9" width="11" height="11" rx="2"/>
                                 <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                            </svg>
+                        </button>
+
+                        <button class="icon-button edit-button" type="button" data-label="Broj kartice" data-value="4539-8421-7123-9084" data-category="kreditna-kartica" aria-label="Uredi broj kartice">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 20h9"></path>
+                                <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"></path>
                             </svg>
                         </button>
                     </div>
@@ -302,7 +324,7 @@
                             </svg>
                         </button>
 
-                        <button class="icon-button edit-button" type="button" data-label="Registracija vozila" data-value="VŽ 1234 AB" aria-label="Uredi registraciju">
+                        <button class="icon-button edit-button" type="button" data-label="Registracija vozila" data-value="VŽ 1234 AB" data-category="ostalo" aria-label="Uredi registraciju">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M12 20h9"/>
                                 <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>
@@ -311,6 +333,77 @@
                     </div>
                 </article>
             </div>
+
+            @if ($savedPodaci->isNotEmpty())
+                <div class="section-heading" style="margin-top: 24px;">
+                    <div>
+                        <h2>Tvoji spremljeni podaci</h2>
+                        <p>Unosi koje si dodao kroz formu.</p>
+                    </div>
+                </div>
+
+                <div class="data-list">
+                    @foreach ($savedPodaci as $podatak)
+                        @php
+                            $categoryLabel = $dataCategories[$podatak->category] ?? $podatak->category;
+                            $searchValue = mb_strtolower($podatak->label . ' ' . $podatak->value . ' ' . $categoryLabel);
+                            $isCreditCard = $podatak->category === 'kreditna-kartica';
+                            $cardDigits = preg_replace('/\D+/', '', $podatak->value);
+                            $cardVisible = $isCreditCard ? '•••• •••• •••• ' . substr($cardDigits, -4) : $podatak->value;
+                        @endphp
+
+                        <article class="data-card" data-category="{{ $podatak->category }}" data-search="{{ $searchValue }}">
+                            <div>
+                                <div class="data-label">
+                                    <span class="category-dot"></span>
+                                    {{ $podatak->label }}
+                                </div>
+                                <div class="data-value">
+                                    @if ($isCreditCard)
+                                        <strong class="masked" data-real-value="{{ $cardDigits }}">{{ $cardVisible }}</strong>
+                                    @else
+                                        <strong>{{ $podatak->value }}</strong>
+                                    @endif
+                                </div>
+                            </div>
+
+                            <div class="card-actions">
+                                @if ($isCreditCard)
+                                    <button class="icon-button reveal-button" type="button" aria-label="Prikaži broj kartice">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/>
+                                            <circle cx="12" cy="12" r="3"/>
+                                        </svg>
+                                    </button>
+                                @endif
+
+                                <button class="icon-button copy-button" type="button" data-copy="{{ $podatak->value }}" aria-label="Kopiraj {{ $podatak->label }}">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="9" y="9" width="11" height="11" rx="2"/>
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                    </svg>
+                                </button>
+
+                                <button
+                                    class="icon-button edit-button"
+                                    type="button"
+                                    data-label="{{ $podatak->label }}"
+                                    data-value="{{ $podatak->value }}"
+                                    data-category="{{ $podatak->category }}"
+                                    data-podatak-id="{{ $podatak->id }}"
+                                    data-update-url="{{ route('podaci.update', $podatak) }}"
+                                    aria-label="Uredi {{ $podatak->label }}"
+                                >
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M12 20h9"/>
+                                        <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </article>
+                    @endforeach
+                </div>
+            @endif
 
             <div class="empty-state" id="emptyState">
                 Nema podataka koji odgovaraju pretrazi ili odabranom filtru.
@@ -323,35 +416,50 @@
     @include('layouts.partials.sidebar-mobile', ['active' => 'user'])
     @include('layouts.partials.user-menu-modal')
 
-    <div class="modal-backdrop" id="dataModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-backdrop {{ $shouldOpenPodaciModal ? 'open' : '' }}" id="dataModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
         <div class="modal">
-            <h3 id="modalTitle">Dodaj osobni podatak</h3>
-            <p>Unesi naziv i vrijednost podatka koji želiš spremiti.</p>
+            <form method="POST" action="{{ route('podaci.store') }}" id="podaciForm" data-store-url="{{ route('podaci.store') }}">
+                @csrf
+                <input type="hidden" name="_method" id="podaciMethod" disabled>
+                <input type="hidden" name="podatak_id" id="podaciId">
 
-            <div class="field">
-                <label for="dataLabel">Naziv podatka</label>
-                <input id="dataLabel" type="text" placeholder="Primjer: OIB">
-            </div>
+                <h3 id="modalTitle">Dodaj osobni podatak</h3>
+                <p>Unesi naziv i vrijednost podatka koji želiš spremiti.</p>
 
-            <div class="field">
-                <label for="dataValue">Vrijednost</label>
-                <input id="dataValue" type="text" placeholder="Unesi vrijednost">
-            </div>
+                <div class="field">
+                    <label for="dataLabel">Naziv podatka</label>
+                    <input id="dataLabel" name="label" type="text" placeholder="Primjer: OIB" value="{{ old('label') }}" required>
+                    @error('label')
+                        <div style="margin-top: 8px; color: var(--danger); font-size: 12px; font-weight: 700;">{{ $message }}</div>
+                    @enderror
+                </div>
 
-            <div class="field">
-                <label for="dataCategory">Kategorija</label>
-                <select id="dataCategory">
-                    <option value="">Odaberi kategoriju</option>
-                    @foreach ($dataCategories as $value => $label)
-                        <option value="{{ $value }}">{{ $label }}</option>
-                    @endforeach
-                </select>
-            </div>
+                <div class="field">
+                    <label for="dataValue">Vrijednost</label>
+                    <input id="dataValue" name="value" type="text" placeholder="Unesi vrijednost" value="{{ old('value') }}" required>
+                    @error('value')
+                        <div style="margin-top: 8px; color: var(--danger); font-size: 12px; font-weight: 700;">{{ $message }}</div>
+                    @enderror
+                </div>
 
-            <div class="modal-actions">
-                <button class="secondary-button" id="closeModal" type="button">Odustani</button>
-                <button class="primary-button" id="saveData" type="button">Spremi</button>
-            </div>
+                <div class="field">
+                    <label for="dataCategory">Kategorija</label>
+                    <select id="dataCategory" name="category" required>
+                        <option value="">Odaberi kategoriju</option>
+                        @foreach ($dataCategories as $value => $label)
+                            <option value="{{ $value }}" @selected(old('category') === $value)>{{ $label }}</option>
+                        @endforeach
+                    </select>
+                    @error('category')
+                        <div style="margin-top: 8px; color: var(--danger); font-size: 12px; font-weight: 700;">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="modal-actions">
+                    <button class="secondary-button" id="closeModal" type="button">Odustani</button>
+                    <button class="primary-button" id="saveData" type="submit">Spremi</button>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -369,14 +477,64 @@
         const labelInput = document.getElementById('dataLabel');
         const valueInput = document.getElementById('dataValue');
         const categoryInput = document.getElementById('dataCategory');
+        const podaciForm = document.getElementById('podaciForm');
+        const podaciMethod = document.getElementById('podaciMethod');
+        const podaciId = document.getElementById('podaciId');
         const toast = document.getElementById('toast');
         const totalCount = document.getElementById('totalCount');
         const mobileUserTrigger = document.getElementById('mobileUserTrigger');
         const userMenuModal = document.getElementById('userMenuModal');
         const closeUserMenu = document.getElementById('closeUserMenu');
+        const creditCardCategory = 'kreditna-kartica';
 
         let activeFilter = 'all';
         totalCount.textContent = cards.length;
+
+        function formatCreditCardValue(value) {
+            return value
+                .replace(/\D+/g, '')
+                .slice(0, 16)
+                .replace(/(.{4})/g, '$1-')
+                .replace(/-$/, '');
+        }
+
+        function syncCreditCardField() {
+            const isCreditCard = categoryInput.value === creditCardCategory;
+
+            valueInput.placeholder = isCreditCard ? 'xxxx-xxxx-xxxx-xxxx' : 'Unesi vrijednost';
+            valueInput.inputMode = isCreditCard ? 'numeric' : 'text';
+            valueInput.maxLength = isCreditCard ? 19 : 65535;
+
+            if (isCreditCard && valueInput.value) {
+                valueInput.value = formatCreditCardValue(valueInput.value);
+            }
+        }
+
+        async function copyText(value) {
+            if (navigator.clipboard && window.isSecureContext) {
+                await navigator.clipboard.writeText(value);
+                return true;
+            }
+
+            const textarea = document.createElement('textarea');
+            textarea.value = value;
+            textarea.setAttribute('readonly', '');
+            textarea.style.position = 'fixed';
+            textarea.style.top = '-9999px';
+            textarea.style.left = '-9999px';
+            document.body.appendChild(textarea);
+            textarea.focus();
+            textarea.select();
+
+            let success = false;
+            try {
+                success = document.execCommand('copy');
+            } finally {
+                document.body.removeChild(textarea);
+            }
+
+            return success;
+        }
 
         function filterCards() {
             const search = searchInput.value.trim().toLowerCase();
@@ -411,8 +569,8 @@
         document.querySelectorAll('.copy-button').forEach(button => {
             button.addEventListener('click', async () => {
                 try {
-                    await navigator.clipboard.writeText(button.dataset.copy);
-                    showToast('Vrijednost je kopirana.');
+                    const success = await copyText(button.dataset.copy || '');
+                    showToast(success ? 'Vrijednost je kopirana.' : 'Kopiranje nije dostupno u ovom pregledniku.');
                 } catch {
                     showToast('Kopiranje nije dostupno u ovom pregledniku.');
                 }
@@ -423,10 +581,11 @@
             button.addEventListener('click', () => {
                 const value = button.closest('.data-card').querySelector('.masked');
                 const isMasked = value.textContent.includes('•');
+                const digits = value.dataset.realValue || '';
 
                 value.textContent = isMasked
-                    ? value.dataset.realValue.replace(/(.{4})/g, '$1 ').trim()
-                    : '•••• •••• •••• ' + value.dataset.realValue.slice(-4);
+                    ? digits.replace(/(.{4})/g, '$1-').replace(/-$/, '')
+                    : '•••• •••• •••• ' + digits.slice(-4);
 
                 showToast(isMasked ? 'Vrijednost je prikazana.' : 'Vrijednost je skrivena.');
             });
@@ -437,6 +596,11 @@
             labelInput.value = '';
             valueInput.value = '';
             categoryInput.value = '';
+            syncCreditCardField();
+            podaciForm.action = podaciForm.dataset.storeUrl;
+            podaciMethod.disabled = true;
+            podaciMethod.value = '';
+            podaciId.value = '';
             modal.classList.add('open');
             setTimeout(() => labelInput.focus(), 100);
         });
@@ -446,7 +610,18 @@
                 modalTitle.textContent = 'Uredi osobni podatak';
                 labelInput.value = button.dataset.label;
                 valueInput.value = button.dataset.value;
-                categoryInput.value = '';
+                categoryInput.value = button.dataset.category || '';
+                syncCreditCardField();
+                podaciId.value = button.dataset.podatakId || '';
+                if (button.dataset.updateUrl) {
+                    podaciForm.action = button.dataset.updateUrl;
+                    podaciMethod.disabled = false;
+                    podaciMethod.value = 'PUT';
+                } else {
+                    podaciForm.action = podaciForm.dataset.storeUrl;
+                    podaciMethod.disabled = true;
+                    podaciMethod.value = '';
+                }
                 modal.classList.add('open');
                 setTimeout(() => labelInput.focus(), 100);
             });
@@ -462,14 +637,16 @@
             }
         });
 
-        document.getElementById('saveData').addEventListener('click', () => {
-            if (!labelInput.value.trim() || !valueInput.value.trim()) {
+        podaciForm.addEventListener('submit', event => {
+            if (categoryInput.value === creditCardCategory) {
+                valueInput.value = formatCreditCardValue(valueInput.value);
+            }
+
+            if (!labelInput.value.trim() || !valueInput.value.trim() || !categoryInput.value.trim()) {
+                event.preventDefault();
                 showToast('Unesi naziv i vrijednost podatka.');
                 return;
             }
-
-            modal.classList.remove('open');
-            showToast('Podatak je spremljen.');
         });
 
         mobileUserTrigger.addEventListener('click', () => {
@@ -495,5 +672,21 @@
                 toast.classList.remove('show');
             }, 2600);
         }
+
+        @if (session('status'))
+        showToast(@json(session('status')));
+        @endif
+
+        categoryInput.addEventListener('change', syncCreditCardField);
+        valueInput.addEventListener('input', () => {
+            if (categoryInput.value === creditCardCategory) {
+                const formatted = formatCreditCardValue(valueInput.value);
+                if (valueInput.value !== formatted) {
+                    valueInput.value = formatted;
+                }
+            }
+        });
+
+        syncCreditCardField();
     </script>
 @endpush

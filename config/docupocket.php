@@ -6,6 +6,7 @@ return [
             'identitet' => 'Identitet',
             'zdravstvo' => 'Zdravstvo',
             'financije' => 'Financije',
+            'kreditna-kartica' => 'Kreditna Kartica',
             'ostalo' => 'Ostalo',
         ],
     ],
