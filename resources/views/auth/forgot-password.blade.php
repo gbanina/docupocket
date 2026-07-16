@@ -1,12 +1,13 @@
 <x-guest-layout
-    heading="Reset your password"
-    subtitle="We will send you a reset link so you can choose a new password."
-    link-label="Back to login"
-    link-text="Log in"
+    heading="Zaboravljena lozinka"
+    subtitle="Poslat ćemo ti poveznicu za postavljanje nove lozinke."
+    link-label="Natrag na prijavu"
+    :link-label-url="url('/')"
+    link-text="Prijavi se"
     :link-url="route('login')"
 >
     <div class="auth-note">
-        Enter the email address linked to your account and we will send a secure password reset link.
+        Upiši email adresu povezanu s računom i poslat ćemo ti sigurnu poveznicu za reset.
     </div>
 
     <x-auth-session-status :status="session('status')" />
@@ -21,7 +22,7 @@
         </div>
 
         <x-primary-button>
-            {{ __('Email Password Reset Link') }}
+            {{ __('Pošalji poveznicu') }}
         </x-primary-button>
     </form>
 </x-guest-layout>

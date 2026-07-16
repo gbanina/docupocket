@@ -1,17 +1,17 @@
 <x-guest-layout
-    heading="Verify your email"
-    subtitle="We sent a verification link to your inbox."
-    link-label="Need a different account?"
-    link-text="Log in"
+    heading="Potvrdi email"
+    subtitle="Poslali smo ti poveznicu za potvrdu email adrese."
+    link-label="Trebaš drugi račun?"
+    link-text="Prijavi se"
     :link-url="route('login')"
 >
     <div class="auth-note">
-        Thanks for signing up. Please verify your email address before continuing. If you did not receive the email, you can request a new link below.
+        Hvala na registraciji. Potvrdi email adresu prije nastavka. Ako poruka nije stigla, možeš zatražiti novu poveznicu.
     </div>
 
     @if (session('status') == 'verification-link-sent')
         <div class="auth-message auth-message-success">
-            A new verification link has been sent to your email address.
+            Nova poveznica za potvrdu poslana je na tvoj email.
         </div>
     @endif
 
@@ -19,14 +19,14 @@
         <form method="POST" action="{{ route('verification.send') }}">
             @csrf
             <x-primary-button>
-                {{ __('Resend Verification Email') }}
+                {{ __('Pošalji novu poveznicu') }}
             </x-primary-button>
         </form>
 
         <form method="POST" action="{{ route('logout') }}">
             @csrf
             <x-secondary-button>
-                {{ __('Log Out') }}
+                {{ __('Odjavi se') }}
             </x-secondary-button>
         </form>
     </div>

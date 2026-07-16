@@ -11,6 +11,7 @@ class GuestLayout extends Component
         public ?string $heading = null,
         public ?string $subtitle = null,
         public ?string $linkLabel = null,
+        public ?string $linkLabelUrl = null,
         public ?string $linkText = null,
         public ?string $linkUrl = null,
     ) {}

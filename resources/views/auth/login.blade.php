@@ -1,6 +1,6 @@
 <x-guest-layout
-    heading="Dobrodošao natrag"
-    subtitle="Prijavi se kako bi nastavio tamo gdje si stao."
+    heading="Prijava"
+    subtitle="Prijavi se kako bi pristupio svojim dokumentima."
     link-label="Nemaš račun?"
     link-text="Kreiraj račun"
     :link-url="route('register')"
@@ -11,17 +11,17 @@
         @csrf
 
         <div class="auth-field">
-            <x-input-label for="email" :value="__('Email address')" />
+            <x-input-label for="email" :value="__('Email')" />
             <x-text-input id="email" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
             <x-input-error :messages="$errors->get('email')" />
         </div>
 
         <div class="auth-field">
             <div class="auth-field-row">
-                <x-input-label for="password" :value="__('Password')" />
+                <x-input-label for="password" :value="__('Lozinka')" />
                 @if (Route::has('password.request'))
                     <a class="auth-link" href="{{ route('password.request') }}">
-                        {{ __('Forgot your password?') }}
+                        {{ __('Zaboravljena lozinka?') }}
                     </a>
                 @endif
             </div>
@@ -32,11 +32,11 @@
 
         <label class="inline-flex items-center gap-2 text-sm text-gray-600">
             <input id="remember_me" type="checkbox" name="remember" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500">
-            <span>{{ __('Remember me') }}</span>
+            <span>{{ __('Zapamti me') }}</span>
         </label>
 
         <x-primary-button>
-            {{ __('Log in') }}
+            {{ __('Prijavi se') }}
         </x-primary-button>
     </form>
 </x-guest-layout>
