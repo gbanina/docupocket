@@ -284,86 +284,9 @@
         </svg>
     </button>
 
-    <nav class="bottom-nav">
-        <button class="nav-item active" type="button">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <rect x="3" y="3" width="7" height="7" rx="2"/>
-                <rect x="14" y="3" width="7" height="7" rx="2"/>
-                <rect x="3" y="14" width="7" height="7" rx="2"/>
-                <rect x="14" y="14" width="7" height="7" rx="2"/>
-            </svg>
-            Početna
-        </button>
-        <button class="nav-item" type="button" onclick="document.querySelector('#isprave').scrollIntoView({behavior: 'smooth'})">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <rect x="3" y="5" width="18" height="14" rx="3"/>
-                <path d="M7 9h4M7 13h7"/>
-            </svg>
-            Isprave
-        </button>
-        <button class="nav-item" type="button" onclick="document.querySelector('#dokumenti').scrollIntoView({behavior: 'smooth'})">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M7 3h7l4 4v14H7z"/>
-                <path d="M14 3v5h5"/>
-            </svg>
-            Dokumenti
-        </button>
-        <button class="nav-item" type="button" id="mobileUserTrigger">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="12" cy="8" r="4"/>
-                <path d="M4 21a8 8 0 0 1 16 0"/>
-            </svg>
-            Korisnik
-        </button>
-    </nav>
-
-    <div class="modal-backdrop" id="shareModal" role="dialog" aria-modal="true" aria-labelledby="shareTitle">
-        <div class="modal">
-            <h3 id="shareTitle">Podijeli dokument</h3>
-            <p id="shareDescription">Upiši email osobe kojoj želiš omogućiti pristup.</p>
-
-            <div class="field">
-                <label for="recipientEmail">Email primatelja</label>
-                <input id="recipientEmail" type="email" placeholder="ime@primjer.hr">
-            </div>
-
-            <div class="field">
-                <label for="shareDuration">Trajanje pristupa</label>
-                <input id="shareDuration" type="text" value="7 dana">
-            </div>
-
-            <div class="modal-actions">
-                <button class="secondary-button" id="closeModal" type="button">Odustani</button>
-                <button class="primary-button" id="confirmShare" type="button">Podijeli</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal-backdrop" id="userMenuModal" role="dialog" aria-modal="true" aria-labelledby="userMenuTitle">
-        <div class="modal user-menu-modal">
-            <div class="user-menu-header">
-                <div>
-                    <h3 id="userMenuTitle">{{ auth()->user()?->name ?? 'User' }}</h3>
-                    <p>{{ auth()->user()?->email }}</p>
-                </div>
-                <button class="icon-button user-menu-close" type="button" id="closeUserMenu" aria-label="Zatvori izbornik">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M18 6 6 18"/>
-                        <path d="M6 6l12 12"/>
-                    </svg>
-                </button>
-            </div>
-
-            <div class="user-menu-actions">
-                <a href="{{ route('profile.edit') }}" class="primary-button user-menu-link">Profil</a>
-
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit" class="secondary-button user-menu-link">Odjava</button>
-                </form>
-            </div>
-        </div>
-    </div>
+    @include('layouts.partials.sidebar-mobile', ['active' => 'home'])
+    @include('layouts.partials.user-menu-modal')
+    @include('layouts.partials.share-modal')
 
     <div class="toast" id="toast"></div>
 @endsection

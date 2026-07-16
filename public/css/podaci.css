@@ -1,0 +1,556 @@
+.podaci-page {
+    --bg: #f5f7fb;
+    --surface: #ffffff;
+    --surface-soft: #eef2f8;
+    --text: #172033;
+    --muted: #6f7b91;
+    --line: #e4e9f1;
+    --primary: #625df5;
+    --primary-dark: #4f49dc;
+    --primary-soft: #eeedff;
+    --danger: #e76464;
+    --danger-soft: #fff0f0;
+    --success: #1fa971;
+    --shadow: 0 16px 40px rgba(31, 43, 71, 0.08);
+    --radius-xl: 26px;
+    --radius-lg: 20px;
+    --radius-md: 14px;
+}
+
+.podaci-page .page-header {
+    display: grid;
+    gap: 16px;
+    margin-bottom: 22px;
+}
+
+.podaci-page .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    width: fit-content;
+    margin-bottom: 8px;
+    color: var(--primary);
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.podaci-page .page-header h1 {
+    margin: 0;
+    font-size: clamp(30px, 8vw, 46px);
+    line-height: 1.04;
+    letter-spacing: -0.05em;
+}
+
+.podaci-page .page-header p {
+    max-width: 650px;
+    margin: 10px 0 0;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.65;
+}
+
+.podaci-page .header-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.podaci-page .primary-button,
+.podaci-page .secondary-button,
+.podaci-page .icon-button,
+.podaci-page .danger-button {
+    border: 0;
+    border-radius: 14px;
+    font-weight: 800;
+}
+
+.podaci-page .primary-button {
+    min-height: 46px;
+    padding: 0 17px;
+    color: white;
+    background: var(--primary);
+    box-shadow: 0 10px 20px rgba(98, 93, 245, 0.22);
+}
+
+.podaci-page .primary-button:hover {
+    background: var(--primary-dark);
+}
+
+.podaci-page .secondary-button {
+    min-height: 46px;
+    padding: 0 17px;
+    color: var(--text);
+    background: var(--surface-soft);
+}
+
+.podaci-page .danger-button {
+    min-height: 46px;
+    padding: 0 17px;
+    color: var(--danger);
+    background: var(--danger-soft);
+}
+
+.podaci-page .search-card {
+    display: grid;
+    gap: 12px;
+    padding: 14px;
+    margin-bottom: 20px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    background: rgba(255, 255, 255, 0.88);
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(12px);
+}
+
+.podaci-page .search-wrap {
+    position: relative;
+}
+
+.podaci-page .search-wrap input {
+    width: 100%;
+    height: 48px;
+    padding: 0 14px 0 44px;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    outline: none;
+    color: var(--text);
+    background: #fafbfe;
+}
+
+.podaci-page .search-wrap input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px var(--primary-soft);
+}
+
+.podaci-page .search-icon {
+    position: absolute;
+    top: 50%;
+    left: 15px;
+    color: var(--muted);
+    transform: translateY(-50%);
+}
+
+.podaci-page .filter-row {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.podaci-page .filter-row::-webkit-scrollbar {
+    display: none;
+}
+
+.podaci-page .filter-chip {
+    flex: 0 0 auto;
+    min-height: 36px;
+    padding: 0 13px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    color: var(--muted);
+    background: white;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.podaci-page .filter-chip.active {
+    border-color: transparent;
+    color: var(--primary);
+    background: var(--primary-soft);
+}
+
+.podaci-page .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin-bottom: 22px;
+}
+
+.podaci-page .summary-card {
+    padding: 16px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+    box-shadow: var(--shadow);
+}
+
+.podaci-page .summary-card span {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.podaci-page .summary-card strong {
+    font-size: 24px;
+    letter-spacing: -0.04em;
+}
+
+.podaci-page .section-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.podaci-page .section-heading h2 {
+    margin: 0;
+    font-size: 20px;
+    letter-spacing: -0.03em;
+}
+
+.podaci-page .section-heading p {
+    margin: 4px 0 0;
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.podaci-page .data-list {
+    display: grid;
+    gap: 11px;
+}
+
+.podaci-page .data-card {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 14px;
+    align-items: center;
+    padding: 16px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+    box-shadow: var(--shadow);
+}
+
+.podaci-page .data-card.hidden {
+    display: none;
+}
+
+.podaci-page .data-label {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin-bottom: 7px;
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.podaci-page .category-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--primary);
+}
+
+.podaci-page .data-value {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+}
+
+.podaci-page .data-value strong {
+    display: block;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 16px;
+    letter-spacing: -0.01em;
+}
+
+.podaci-page .masked {
+    letter-spacing: 0.12em !important;
+}
+
+.podaci-page .card-actions {
+    display: flex;
+    gap: 7px;
+}
+
+.podaci-page .icon-button {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    color: var(--text);
+    background: var(--surface-soft);
+}
+
+.podaci-page .icon-button:hover {
+    color: var(--primary);
+    background: var(--primary-soft);
+}
+
+.podaci-page .empty-state {
+    display: none;
+    padding: 34px 20px;
+    border: 1px dashed var(--line);
+    border-radius: var(--radius-xl);
+    color: var(--muted);
+    text-align: center;
+    background: rgba(255, 255, 255, 0.6);
+}
+
+.podaci-page .bottom-nav {
+    position: fixed;
+    z-index: 20;
+    right: 12px;
+    bottom: 12px;
+    left: 12px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    padding: 8px;
+    border: 1px solid rgba(228, 233, 241, 0.9);
+    border-radius: 22px;
+    background: rgba(255, 255, 255, 0.92);
+    box-shadow: 0 18px 45px rgba(31, 43, 71, 0.18);
+    backdrop-filter: blur(18px);
+}
+
+.podaci-page .nav-item {
+    display: grid;
+    place-items: center;
+    gap: 4px;
+    min-height: 52px;
+    border: 0;
+    border-radius: 15px;
+    color: var(--muted);
+    background: transparent;
+    font-size: 10px;
+    font-weight: 800;
+}
+
+.podaci-page .nav-item.active {
+    color: var(--primary);
+    background: var(--primary-soft);
+}
+
+.podaci-page .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    display: none;
+    place-items: end center;
+    padding: 16px;
+    background: rgba(12, 18, 31, 0.45);
+    backdrop-filter: blur(7px);
+}
+
+.podaci-page .modal-backdrop.open {
+    display: grid;
+}
+
+.podaci-page .modal {
+    width: min(100%, 500px);
+    padding: 22px;
+    border-radius: 26px;
+    background: var(--surface);
+    box-shadow: 0 30px 80px rgba(12, 18, 31, 0.25);
+    animation: podaciSlideUp 0.22s ease-out;
+}
+
+@keyframes podaciSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(24px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.podaci-page .modal h3 {
+    margin: 0 0 7px;
+    font-size: 22px;
+}
+
+.podaci-page .modal > p {
+    margin: 0 0 18px;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.55;
+}
+
+.podaci-page .field {
+    display: grid;
+    gap: 7px;
+    margin-bottom: 14px;
+}
+
+.podaci-page .field label {
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.podaci-page .field input,
+.podaci-page .field select {
+    width: 100%;
+    height: 49px;
+    padding: 0 14px;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    outline: none;
+    color: var(--text);
+    background: #fafbfe;
+}
+
+.podaci-page .field input:focus,
+.podaci-page .field select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px var(--primary-soft);
+}
+
+.podaci-page .modal-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.podaci-page .toast {
+    position: fixed;
+    z-index: 80;
+    right: 16px;
+    bottom: 100px;
+    left: 16px;
+    display: none;
+    max-width: 420px;
+    margin: auto;
+    padding: 13px 16px;
+    border-radius: 14px;
+    color: white;
+    background: #182033;
+    box-shadow: var(--shadow);
+    font-size: 13px;
+    text-align: center;
+}
+
+.podaci-page .toast.show {
+    display: block;
+    animation: podaciFadeIn 0.18s ease-out;
+}
+
+@keyframes podaciFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (min-width: 760px) {
+    .podaci-page .main {
+        max-width: 1100px;
+        margin: auto;
+        padding: 30px 28px 70px;
+    }
+
+    .podaci-page .page-header {
+        grid-template-columns: 1fr auto;
+        align-items: end;
+    }
+
+    .podaci-page .search-card {
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+    }
+
+    .podaci-page .summary-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .podaci-page .data-list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .podaci-page .bottom-nav {
+        display: none;
+    }
+
+    .podaci-page .modal-backdrop {
+        place-items: center;
+    }
+}
+
+@media (min-width: 1040px) {
+    .podaci-page .app-shell {
+        display: grid;
+        grid-template-columns: 250px 1fr;
+    }
+
+    .podaci-page .sidebar {
+        position: sticky;
+        top: 0;
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        padding: 28px 20px;
+        border-right: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(14px);
+    }
+
+    .podaci-page .sidebar-brand {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        margin-bottom: 34px;
+        font-weight: 800;
+        letter-spacing: -0.04em;
+    }
+
+    .podaci-page .sidebar-nav {
+        display: grid;
+        gap: 7px;
+    }
+
+    .podaci-page .sidebar-link {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-height: 48px;
+        padding: 0 14px;
+        border-radius: 14px;
+        color: var(--muted);
+        font-size: 14px;
+        font-weight: 800;
+        text-decoration: none;
+    }
+
+    .podaci-page .sidebar-link.active {
+        color: var(--primary);
+        background: var(--primary-soft);
+    }
+
+    .podaci-page .sidebar-footer {
+        margin-top: auto;
+        padding: 15px;
+        border-radius: 18px;
+        background: var(--surface-soft);
+    }
+
+    .podaci-page .sidebar-footer strong {
+        display: block;
+        margin-bottom: 5px;
+        font-size: 13px;
+    }
+
+    .podaci-page .sidebar-footer span {
+        color: var(--muted);
+        font-size: 11px;
+        line-height: 1.5;
+    }
+
+    .podaci-page .main {
+        max-width: 1220px;
+        margin: 0;
+        padding: 36px 44px 70px;
+    }
+}

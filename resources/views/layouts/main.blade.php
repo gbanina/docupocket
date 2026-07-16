@@ -22,7 +22,7 @@
 
     @stack('head')
 </head>
-<body>
+<body class="@yield('body_class')">
 <div class="app-shell">
     @include('layouts.partials.sidebar')
 
