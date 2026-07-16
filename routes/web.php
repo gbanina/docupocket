@@ -4,6 +4,7 @@ use App\Http\Controllers\PodatakController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\IspravaController;
 use App\Http\Controllers\DokumentController;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -12,9 +13,7 @@ Route::get('/', function () {
         : view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dokumenti', [DokumentController::class, 'index'])->name('dokumenti');
@@ -27,7 +26,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/dokumenti/{document}', [DokumentController::class, 'destroy'])->name('dokumenti.destroy');
     Route::get('/isprave/create', [IspravaController::class, 'create'])->name('isprave.create');
     Route::post('/isprave', [IspravaController::class, 'store'])->name('isprave.store');
-    Route::get('/isprave', fn () => view('isprave'))->name('isprave');
+    Route::get('/isprave', [IspravaController::class, 'index'])->name('isprave');
+    Route::get('/isprave/{isprava}', [IspravaController::class, 'show'])->name('isprave.show');
+    Route::get('/isprave/{isprava}/uredi', [IspravaController::class, 'edit'])->name('isprave.edit');
+    Route::put('/isprave/{isprava}', [IspravaController::class, 'update'])->name('isprave.update');
     Route::get('/podaci', [PodatakController::class, 'index'])->name('podaci');
     Route::post('/podaci', [PodatakController::class, 'store'])->name('podaci.store');
     Route::put('/podaci/{podatak}', [PodatakController::class, 'update'])->name('podaci.update');

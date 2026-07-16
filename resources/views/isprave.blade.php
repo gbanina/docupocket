@@ -3,6 +3,10 @@
 @section('title', config('app.name', 'DocuPocket') . ' — Isprave')
 @section('body_class', 'isprave-page')
 
+@php
+    $filters = config('docupocket.isprave.categories', []);
+@endphp
+
 @section('content')
     <section class="page-heading">
         <div class="page-heading-copy">
@@ -32,32 +36,31 @@
 
         <div class="filter-row">
             <button class="filter-chip active" type="button" data-filter="all">Sve</button>
-            <button class="filter-chip" type="button" data-filter="identitet">Identitet</button>
-            <button class="filter-chip" type="button" data-filter="vozilo">Vožnja</button>
-            <button class="filter-chip" type="button" data-filter="zdravstvo">Zdravstvo</button>
-            <button class="filter-chip" type="button" data-filter="putovanje">Putovanje</button>
+            @foreach ($filters as $value => $label)
+                <button class="filter-chip" type="button" data-filter="{{ $value }}">{{ $label }}</button>
+            @endforeach
         </div>
     </section>
 
     <section class="summary-grid">
         <article class="summary-card">
             <span>Ukupno isprava</span>
-            <strong>5</strong>
+            <strong>{{ $summary['total'] ?? 0 }}</strong>
         </article>
 
         <article class="summary-card">
             <span>Važeće</span>
-            <strong>4</strong>
+            <strong>{{ $summary['active'] ?? 0 }}</strong>
         </article>
 
         <article class="summary-card">
             <span>Uskoro istječu</span>
-            <strong>1</strong>
+            <strong>{{ $summary['expiring_soon'] ?? 0 }}</strong>
         </article>
 
         <article class="summary-card">
-            <span>Podijeljene</span>
-            <strong>2</strong>
+            <span>S fotografijama</span>
+            <strong>{{ $summary['with_images'] ?? 0 }}</strong>
         </article>
     </section>
 
@@ -70,250 +73,60 @@
         </div>
 
         <div class="documents-grid" id="dokumenti">
-            <article class="document-card" data-category="identitet" data-search="osobna iskaznica hrvatska 123456789">
-                <div class="document-preview">
-                    <span class="document-chip">🇭🇷 Republika Hrvatska</span>
-                    <div class="document-code">
-                        <span>Broj isprave</span>
-                        <strong>123456789</strong>
-                    </div>
-                    <div class="side-count">2 slike</div>
-                </div>
-
-                <div class="document-body">
-                    <div class="document-topline">
-                        <h3>Osobna iskaznica</h3>
-                        <span class="status-badge valid">Važeća</span>
-                    </div>
-
-                    <div class="document-meta">
-                        <div class="meta-item">
-                            <span>Vrijedi do</span>
-                            <strong>12. 8. 2031.</strong>
+            @forelse ($isprave as $isprava)
+                <article class="document-card" data-category="{{ $isprava->category }}" data-search="{{ strtolower($isprava->search) }}">
+                    <div class="document-preview {{ $isprava->preview_class }}">
+                        <span class="document-chip">{{ $isprava->preview_chip }}</span>
+                        <div class="document-code">
+                            <span>{{ $isprava->code_label }}</span>
+                            <strong>{{ $isprava->code_value }}</strong>
                         </div>
-                        <div class="meta-item">
-                            <span>Podijeljeno</span>
-                            <strong>1 osoba</strong>
+                        <div class="side-count">{{ $isprava->image_count }} slike</div>
+                    </div>
+
+                    <div class="document-body">
+                        <div class="document-topline">
+                            <h3>{{ $isprava->name }}</h3>
+                            <span class="status-badge {{ $isprava->status_class }}">{{ $isprava->status_label }}</span>
                         </div>
-                    </div>
 
-                    <div class="document-actions document-actions-three">
-                        <button class="primary-button" type="button">Otvori</button>
-
-                        <button class="icon-button share-trigger" type="button" data-item="Osobna iskaznica" aria-label="Podijeli osobnu iskaznicu">
-                            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <circle cx="18" cy="5" r="3"/>
-                                <circle cx="6" cy="12" r="3"/>
-                                <circle cx="18" cy="19" r="3"/>
-                                <path d="M8.6 10.5 15.4 6.5M8.6 13.5l6.8 4"/>
-                            </svg>
-                        </button>
-
-                        <button class="icon-button" type="button" onclick="showToast('Otvoreno uređivanje osobne iskaznice.')" aria-label="Uredi osobnu iskaznicu">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M12 20h9"/>
-                                <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-            </article>
-
-            <article class="document-card" data-category="vozilo" data-search="vozačka dozvola HR-9087342">
-                <div class="document-preview license">
-                    <span class="document-chip">Vozačka dozvola</span>
-                    <div class="document-code">
-                        <span>Broj dozvole</span>
-                        <strong>HR-9087342</strong>
-                    </div>
-                    <div class="side-count">2 slike</div>
-                </div>
-
-                <div class="document-body">
-                    <div class="document-topline">
-                        <h3>Vozačka dozvola</h3>
-                        <span class="status-badge valid">Važeća</span>
-                    </div>
-
-                    <div class="document-meta">
-                        <div class="meta-item">
-                            <span>Vrijedi do</span>
-                            <strong>4. 3. 2030.</strong>
+                        <div class="document-meta">
+                            <div class="meta-item">
+                                <span>Vrijedi do</span>
+                                <strong>{{ $isprava->expires_label }}</strong>
+                            </div>
+                            <div class="meta-item">
+                                <span>Napomena</span>
+                                <strong>{{ $isprava->note }}</strong>
+                            </div>
                         </div>
-                        <div class="meta-item">
-                            <span>Podijeljeno</span>
-                            <strong>Nije podijeljeno</strong>
+
+                        <div class="document-actions document-actions-three">
+                            <a class="primary-button" href="{{ route('isprave.show', $isprava->id) }}">Otvori</a>
+
+                            <button class="icon-button share-trigger" type="button" data-item="{{ $isprava->name }}" aria-label="Podijeli {{ $isprava->name }}">
+                                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="18" cy="5" r="3"/>
+                                    <circle cx="6" cy="12" r="3"/>
+                                    <circle cx="18" cy="19" r="3"/>
+                                    <path d="M8.6 10.5 15.4 6.5M8.6 13.5l6.8 4"/>
+                                </svg>
+                            </button>
+
+                            <a class="icon-button" href="{{ route('isprave.edit', $isprava->id) }}" aria-label="Uredi {{ $isprava->name }}">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 20h9"/>
+                                    <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>
+                                </svg>
+                            </a>
                         </div>
                     </div>
-
-                    <div class="document-actions document-actions-three">
-                        <button class="primary-button" type="button">Otvori</button>
-
-                        <button class="icon-button share-trigger" type="button" data-item="Vozačka dozvola" aria-label="Podijeli vozačku dozvolu">
-                            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <circle cx="18" cy="5" r="3"/>
-                                <circle cx="6" cy="12" r="3"/>
-                                <circle cx="18" cy="19" r="3"/>
-                                <path d="M8.6 10.5 15.4 6.5M8.6 13.5l6.8 4"/>
-                            </svg>
-                        </button>
-
-                        <button class="icon-button" type="button" onclick="showToast('Otvoreno uređivanje vozačke dozvole.')" aria-label="Uredi vozačku dozvolu">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M12 20h9"/>
-                                <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>
-                            </svg>
-                        </button>
-                    </div>
+                </article>
+            @empty
+                <div class="empty-state" id="emptyState">
+                    Nema spremljenih isprava. Dodaj prvu ispravu da se pojavi ovdje.
                 </div>
-            </article>
-
-            <article class="document-card" data-category="putovanje" data-search="putovnica europska unija PA0827341">
-                <div class="document-preview passport">
-                    <span class="document-chip">Europska unija</span>
-                    <div class="document-code">
-                        <span>Broj putovnice</span>
-                        <strong>PA0827341</strong>
-                    </div>
-                    <div class="side-count">2 slike</div>
-                </div>
-
-                <div class="document-body">
-                    <div class="document-topline">
-                        <h3>Putovnica</h3>
-                        <span class="status-badge warning">Istječe uskoro</span>
-                    </div>
-
-                    <div class="document-meta">
-                        <div class="meta-item">
-                            <span>Vrijedi do</span>
-                            <strong>19. 5. 2027.</strong>
-                        </div>
-                        <div class="meta-item">
-                            <span>Podijeljeno</span>
-                            <strong>1 osoba</strong>
-                        </div>
-                    </div>
-
-                    <div class="document-actions document-actions-three">
-                        <button class="primary-button" type="button">Otvori</button>
-
-                        <button class="icon-button share-trigger" type="button" data-item="Putovnica" aria-label="Podijeli putovnicu">
-                            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <circle cx="18" cy="5" r="3"/>
-                                <circle cx="6" cy="12" r="3"/>
-                                <circle cx="18" cy="19" r="3"/>
-                                <path d="M8.6 10.5 15.4 6.5M8.6 13.5l6.8 4"/>
-                            </svg>
-                        </button>
-
-                        <button class="icon-button" type="button" onclick="showToast('Otvoreno uređivanje putovnice.')" aria-label="Uredi putovnicu">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M12 20h9"/>
-                                <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-            </article>
-
-            <article class="document-card" data-category="zdravstvo" data-search="zdravstvena iskaznica hzzo HR-2026-817265">
-                <div class="document-preview health">
-                    <span class="document-chip">HZZO</span>
-                    <div class="document-code">
-                        <span>Broj iskaznice</span>
-                        <strong>HR-2026-817265</strong>
-                    </div>
-                    <div class="side-count">2 slike</div>
-                </div>
-
-                <div class="document-body">
-                    <div class="document-topline">
-                        <h3>Zdravstvena iskaznica</h3>
-                        <span class="status-badge valid">Aktivna</span>
-                    </div>
-
-                    <div class="document-meta">
-                        <div class="meta-item">
-                            <span>MBO</span>
-                            <strong>908172635</strong>
-                        </div>
-                        <div class="meta-item">
-                            <span>Podijeljeno</span>
-                            <strong>Nije podijeljeno</strong>
-                        </div>
-                    </div>
-
-                    <div class="document-actions document-actions-three">
-                        <button class="primary-button" type="button">Otvori</button>
-
-                        <button class="icon-button share-trigger" type="button" data-item="Zdravstvena iskaznica" aria-label="Podijeli zdravstvenu iskaznicu">
-                            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <circle cx="18" cy="5" r="3"/>
-                                <circle cx="6" cy="12" r="3"/>
-                                <circle cx="18" cy="19" r="3"/>
-                                <path d="M8.6 10.5 15.4 6.5M8.6 13.5l6.8 4"/>
-                            </svg>
-                        </button>
-
-                        <button class="icon-button" type="button" onclick="showToast('Otvoreno uređivanje zdravstvene iskaznice.')" aria-label="Uredi zdravstvenu iskaznicu">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M12 20h9"/>
-                                <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-            </article>
-
-            <article class="document-card" data-category="putovanje" data-search="europska kartica zdravstvenog osiguranja ekzo">
-                <div class="document-preview eu">
-                    <span class="document-chip">European Health Insurance Card</span>
-                    <div class="document-code">
-                        <span>Broj kartice</span>
-                        <strong>EHIC-9081726</strong>
-                    </div>
-                    <div class="side-count">2 slike</div>
-                </div>
-
-                <div class="document-body">
-                    <div class="document-topline">
-                        <h3>Europska zdravstvena kartica</h3>
-                        <span class="status-badge valid">Važeća</span>
-                    </div>
-
-                    <div class="document-meta">
-                        <div class="meta-item">
-                            <span>Vrijedi do</span>
-                            <strong>30. 6. 2029.</strong>
-                        </div>
-                        <div class="meta-item">
-                            <span>Podijeljeno</span>
-                            <strong>Nije podijeljeno</strong>
-                        </div>
-                    </div>
-
-                    <div class="document-actions document-actions-three">
-                        <button class="primary-button" type="button">Otvori</button>
-
-                        <button class="icon-button share-trigger" type="button" data-item="Europska zdravstvena kartica" aria-label="Podijeli europsku zdravstvenu karticu">
-                            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <circle cx="18" cy="5" r="3"/>
-                                <circle cx="6" cy="12" r="3"/>
-                                <circle cx="18" cy="19" r="3"/>
-                                <path d="M8.6 10.5 15.4 6.5M8.6 13.5l6.8 4"/>
-                            </svg>
-                        </button>
-
-                        <button class="icon-button" type="button" onclick="showToast('Otvoreno uređivanje europske zdravstvene kartice.')" aria-label="Uredi europsku zdravstvenu karticu">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M12 20h9"/>
-                                <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-            </article>
+            @endforelse
         </div>
 
         <div class="empty-state" id="emptyState">
@@ -451,5 +264,7 @@
         if (toast.dataset.status) {
             showToast(toast.dataset.status);
         }
+
+        filterDocuments();
     </script>
 @endpush
