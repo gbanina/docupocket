@@ -76,15 +76,32 @@
                 Dokumenti
             </a>
 
-            <a class="sidebar-link" href="#dijeljeno">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="18" cy="5" r="3"/>
-                    <circle cx="6" cy="12" r="3"/>
-                    <circle cx="18" cy="19" r="3"/>
-                    <path d="M8.6 10.5 15.4 6.5M8.6 13.5l6.8 4"/>
-                </svg>
-                Dijeljeno
-            </a>
+            <div class="sidebar-user-menu">
+                <a class="sidebar-link sidebar-user-trigger" href="{{ route('profile.edit') }}">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="8" r="4"/>
+                        <path d="M4 21a8 8 0 0 1 16 0"/>
+                    </svg>
+                    {{ $userName }}
+                    <svg class="sidebar-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="m6 9 6 6 6-6"/>
+                    </svg>
+                </a>
+
+                <div class="sidebar-submenu">
+                    <div class="sidebar-submenu-header">
+                        <strong>{{ $userName }}</strong>
+                        <span>{{ auth()->user()?->email }}</span>
+                    </div>
+
+                    <a href="{{ route('profile.edit') }}" class="sidebar-submenu-link">Profil</a>
+
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="sidebar-submenu-link sidebar-submenu-danger">Odjava</button>
+                    </form>
+                </div>
+            </div>
         </nav>
 
         <div class="sidebar-footer">
@@ -94,39 +111,6 @@
     </aside>
 
     <main class="main">
-        <header class="topbar">
-            <div class="brand-mobile">
-                <div class="logo">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M7 3h7l4 4v14H7z"/>
-                        <path d="M14 3v5h5"/>
-                        <path d="M10 13h5M10 17h5"/>
-                    </svg>
-                </div>
-                DocuPocket
-            </div>
-
-            <div class="profile-wrap">
-                <button class="avatar-button" type="button" id="profileTrigger" aria-label="Korisnički profil" aria-expanded="false">
-                    {{ $initials }}
-                </button>
-
-                <div class="profile-menu" id="profileMenu" aria-hidden="true">
-                    <div class="profile-menu-header">
-                        <strong>{{ $userName }}</strong>
-                        <span>{{ auth()->user()?->email }}</span>
-                    </div>
-
-                    <a href="{{ route('profile.edit') }}" class="profile-menu-link">Profil</a>
-
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <button type="submit" class="profile-menu-link profile-menu-danger">Odjava</button>
-                    </form>
-                </div>
-            </div>
-        </header>
-
         <section class="page-heading">
             <span class="eyebrow">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -135,73 +119,7 @@
                 </svg>
                 Tvoj privatni digitalni trezor
             </span>
-            <h1>Svi važni dokumenti.<br>Uvijek pri ruci.</h1>
-            <p>Brzo pronađi broj osobne, pokaži sliku vozačke ili sigurno podijeli dokument članu obitelji.</p>
-        </section>
-
-        <div class="security-banner">
-            <div class="security-icon">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <rect x="5" y="10" width="14" height="11" rx="2"/>
-                    <path d="M8 10V7a4 4 0 0 1 8 0v3"/>
-                </svg>
-            </div>
-            <div>
-                <strong>Zaštićeno i privatno</strong>
-                <span>Sve osjetljive podatke u produkcijskoj verziji treba enkriptirati prije spremanja.</span>
-            </div>
-        </div>
-
-        <section class="stats-grid">
-            <article class="stat-card">
-                <div class="stat-label">
-                    <span class="stat-icon">#</span>
-                    Podaci
-                </div>
-                <strong>8</strong>
-                <small>OIB, brojevi kartica i drugo</small>
-            </article>
-
-            <article class="stat-card">
-                <div class="stat-label">
-                    <span class="stat-icon">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <rect x="3" y="5" width="18" height="14" rx="3"/>
-                        </svg>
-                    </span>
-                    Isprave
-                </div>
-                <strong>5</strong>
-                <small>Osobna, putovnica, vozačka</small>
-            </article>
-
-            <article class="stat-card">
-                <div class="stat-label">
-                    <span class="stat-icon">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M7 3h7l4 4v14H7z"/>
-                        </svg>
-                    </span>
-                    Dokumenti
-                </div>
-                <strong>12</strong>
-                <small>PDF i DOC datoteke</small>
-            </article>
-
-            <article class="stat-card">
-                <div class="stat-label">
-                    <span class="stat-icon">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="18" cy="5" r="3"/>
-                            <circle cx="6" cy="12" r="3"/>
-                            <circle cx="18" cy="19" r="3"/>
-                        </svg>
-                    </span>
-                    Dijeljeno
-                </div>
-                <strong>3</strong>
-                <small>Aktivna dijeljenja</small>
-            </article>
+            <h1>Svi važni podaci uvijek pri ruci.</h1>
         </section>
 
         <section class="section">
@@ -547,9 +465,6 @@
     const closeModal = document.getElementById('closeModal');
     const confirmShare = document.getElementById('confirmShare');
     const toast = document.getElementById('toast');
-    const profileTrigger = document.getElementById('profileTrigger');
-    const profileMenu = document.getElementById('profileMenu');
-
     let selectedItem = '';
 
     document.querySelectorAll('.share-trigger').forEach(button => {
@@ -609,32 +524,6 @@
         }, 2600);
     }
 
-    if (profileTrigger && profileMenu) {
-        const closeMenu = () => {
-            profileMenu.classList.remove('open');
-            profileTrigger.setAttribute('aria-expanded', 'false');
-            profileMenu.setAttribute('aria-hidden', 'true');
-        };
-
-        profileTrigger.addEventListener('click', event => {
-            event.stopPropagation();
-            const isOpen = profileMenu.classList.toggle('open');
-            profileTrigger.setAttribute('aria-expanded', String(isOpen));
-            profileMenu.setAttribute('aria-hidden', String(!isOpen));
-        });
-
-        document.addEventListener('click', event => {
-            if (!profileMenu.contains(event.target) && !profileTrigger.contains(event.target)) {
-                closeMenu();
-            }
-        });
-
-        document.addEventListener('keydown', event => {
-            if (event.key === 'Escape') {
-                closeMenu();
-            }
-        });
-    }
 </script>
 </body>
 </html>
