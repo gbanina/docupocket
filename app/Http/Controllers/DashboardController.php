@@ -32,7 +32,14 @@ class DashboardController extends Controller
             ->get()
             ->map(fn (Dokument $document) => $this->presentDocument($document));
 
-        return view('dashboard', compact('podaci', 'isprave', 'dokumenti'));
+        $summary = [
+            'podaci' => $podaci->count(),
+            'isprave' => $isprave->count(),
+            'dokumenti' => $dokumenti->count(),
+            'uskoro_istek' => $isprave->filter(fn ($item) => $item->status_class === 'warning')->count(),
+        ];
+
+        return view('dashboard', compact('podaci', 'isprave', 'dokumenti', 'summary'));
     }
 
     private function presentPodatak(Podatak $podatak): object
@@ -57,7 +64,8 @@ class DashboardController extends Controller
             'document_number' => $isprava->document_number ?: 'Nije uneseno',
             'code_label' => $this->codeLabelForCategory($categoryLabel),
             'preview_class' => $this->previewClassForCategory($category),
-            'preview_chip' => $this->previewChipForCategory($categoryLabel, $category),
+            'preview_chip' => $categoryLabel,
+            'category_label' => $categoryLabel,
             'expires_label' => $expiresAt ? $this->formatCroatianDate($expiresAt) : 'Nije postavljeno',
             'status_label' => $this->resolveStatus($expiresAt)['label'],
             'status_class' => $this->resolveStatus($expiresAt)['class'],
@@ -111,17 +119,6 @@ class DashboardController extends Controller
             'zdravstvo' => 'health',
             'ostalo' => 'eu',
             default => '',
-        };
-    }
-
-    private function previewChipForCategory(string $label, string $category): string
-    {
-        return match ($category) {
-            'identitet' => '🇭🇷 Republika Hrvatska',
-            'vozilo' => 'Vozačka dozvola',
-            'zdravstvo' => 'HZZO',
-            'putovanje' => 'Europska unija',
-            default => $label,
         };
     }
 

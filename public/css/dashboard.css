@@ -172,6 +172,40 @@ button {
     line-height: 1.6;
 }
 
+.dashboard-page .summary-grid {
+    display: grid;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.dashboard-page .summary-card {
+    display: grid;
+    gap: 6px;
+    padding: 16px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    background: rgba(255, 255, 255, 0.92);
+    box-shadow: var(--shadow);
+}
+
+.dashboard-page .summary-card span {
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.dashboard-page .summary-card strong {
+    font-size: 24px;
+    letter-spacing: -0.04em;
+    line-height: 1;
+}
+
+.dashboard-page .summary-card small {
+    color: var(--muted);
+    font-size: 11px;
+    line-height: 1.45;
+}
+
 .isprave-page .page-heading {
     display: grid;
     gap: 16px;
@@ -2527,6 +2561,10 @@ button {
     .isprave-page .page-heading {
         grid-template-columns: minmax(0, 1fr) auto;
         align-items: end;
+    }
+
+    .dashboard-page .summary-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
     }
 
     .isprave-page .summary-grid {

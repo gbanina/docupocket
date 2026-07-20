@@ -1,6 +1,6 @@
 <x-guest-layout
     heading="Prijava"
-    subtitle="Prijavi se kako bi pristupio svojim dokumentima."
+    subtitle="Prijavi se samo s potvrđenom email adresom."
     link-label="Nemaš račun?"
     link-text="Kreiraj račun"
     :link-url="route('register')"

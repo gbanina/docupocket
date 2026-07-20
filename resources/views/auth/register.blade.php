@@ -1,8 +1,8 @@
 <x-guest-layout
     heading="Registracija"
-    subtitle="Kreiraj svoj DocuPocket račun u minuti."
+    subtitle="Kreiraj račun i odmah ćemo ti poslati verifikacijski email."
     link-label="Natrag na prijavu"
-    :link-label-url="url('/')"
+    :link-label-url="route('login')"
     link-text="Prijavi se"
     :link-url="route('login')"
 >
@@ -34,7 +34,7 @@
         </div>
 
         <x-primary-button>
-            {{ __('Registriraj se') }}
+            {{ __('Kreiraj račun') }}
         </x-primary-button>
     </form>
 </x-guest-layout>

@@ -1,6 +1,7 @@
 @extends('layouts.main')
 
 @section('title', config('app.name', 'DocuPocket') . ' — Osobni dokumenti')
+@section('body_class', 'dashboard-page')
 
 @section('content')
     <section class="page-heading">
@@ -12,6 +13,32 @@
             Tvoj privatni digitalni trezor
         </span>
         <h1>Tvoji podaci uvijek pri ruci.</h1>
+    </section>
+
+    <section class="summary-grid">
+        <article class="summary-card">
+            <span>Podaci</span>
+            <strong>{{ $summary['podaci'] ?? 0 }}</strong>
+            <small>Spremljene vrijednosti</small>
+        </article>
+
+        <article class="summary-card">
+            <span>Isprave</span>
+            <strong>{{ $summary['isprave'] ?? 0 }}</strong>
+            <small>Dokumenti s fotografijama</small>
+        </article>
+
+        <article class="summary-card">
+            <span>Dokumenti</span>
+            <strong>{{ $summary['dokumenti'] ?? 0 }}</strong>
+            <small>Datoteke u trezoru</small>
+        </article>
+
+        <article class="summary-card">
+            <span>Uskoro istječe</span>
+            <strong>{{ $summary['uskoro_istek'] ?? 0 }}</strong>
+            <small>Isprave za nadzor</small>
+        </article>
     </section>
 
     <section class="section" id="podaci">
@@ -65,11 +92,11 @@
                         </div>
                     </div>
                     <div class="document-body">
-                        <div class="document-topline">
-                            <h3>{{ $isprava->name }}</h3>
-                            <span class="status-badge {{ $isprava->status_class }}">{{ $isprava->status_label }}</span>
-                        </div>
-                        <p>Vrijedi do {{ $isprava->expires_label }}</p>
+                    <div class="document-topline">
+                        <h3>{{ $isprava->name }}</h3>
+                        <span class="status-badge {{ $isprava->status_class }}">{{ $isprava->status_label }}</span>
+                    </div>
+                        <p>Kategorija {{ $isprava->category_label }} · vrijedi do {{ $isprava->expires_label }}</p>
                         <div class="document-actions">
                             <a class="primary-button" href="{{ route('isprave.show', $isprava->id) }}">Otvori</a>
                             <button class="icon-button share-trigger" type="button" data-item="{{ $isprava->name }}" aria-label="Podijeli {{ $isprava->name }}">
