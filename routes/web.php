@@ -13,6 +13,9 @@ Route::get('/', function () {
         : view('welcome');
 });
 
+Route::view('/privacy', 'privacy')->name('privacy');
+Route::view('/legal', 'legal')->name('legal');
+
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware(['auth', 'verified'])->group(function () {

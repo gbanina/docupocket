@@ -8,6 +8,7 @@ use Illuminate\View\View;
 class GuestLayout extends Component
 {
     public function __construct(
+        public ?string $title = null,
         public ?string $heading = null,
         public ?string $subtitle = null,
         public ?string $linkLabel = null,

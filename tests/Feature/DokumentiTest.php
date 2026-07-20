@@ -53,12 +53,10 @@ class DokumentiTest extends TestCase
 
         $document = Dokument::query()->firstOrFail();
 
-        $this->assertDatabaseHas('dokumenti', [
-            'user_id' => $user->id,
-            'name' => 'Polica putnog osiguranja',
-            'category' => 'putovanje',
-            'original_name' => 'polica.pdf',
-        ]);
+        $this->assertSame($user->id, $document->user_id);
+        $this->assertSame('Polica putnog osiguranja', $document->name);
+        $this->assertSame('putovanje', $document->category);
+        $this->assertSame('polica.pdf', $document->original_name);
 
         Storage::disk('local')->assertExists($document->file_path);
         $this->assertStringStartsWith($user->id . '/', $document->file_path);

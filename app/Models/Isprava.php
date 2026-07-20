@@ -30,6 +30,10 @@ class Isprava extends Model
     protected function casts(): array
     {
         return [
+            'name' => 'encrypted',
+            'document_number' => 'encrypted',
+            'issuer' => 'encrypted',
+            'note' => 'encrypted',
             'issued_at' => 'date',
             'expires_at' => 'date',
             'reminder_enabled' => 'boolean',

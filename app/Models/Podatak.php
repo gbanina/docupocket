@@ -19,6 +19,13 @@ class Podatak extends Model
         'value',
     ];
 
+    protected function casts(): array
+    {
+        return [
+            'value' => 'encrypted',
+        ];
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

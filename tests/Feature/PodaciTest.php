@@ -33,12 +33,12 @@ class PodaciTest extends TestCase
 
         $response->assertRedirect(route('podaci', absolute: false));
 
-        $this->assertDatabaseHas('podaci', [
-            'user_id' => $user->id,
-            'label' => 'Broj police',
-            'value' => 'ABC-123',
-            'category' => 'ostalo',
-        ]);
+        $podatak = Podatak::query()->firstOrFail();
+
+        $this->assertSame($user->id, $podatak->user_id);
+        $this->assertSame('Broj police', $podatak->label);
+        $this->assertSame('ABC-123', $podatak->value);
+        $this->assertSame('ostalo', $podatak->category);
     }
 
     public function test_authenticated_user_can_update_podatak(): void
@@ -59,10 +59,9 @@ class PodaciTest extends TestCase
 
         $response->assertRedirect(route('podaci', absolute: false));
 
-        $this->assertDatabaseHas('podaci', [
-            'id' => $podatak->id,
-            'value' => '1111-2222-3333-4444',
-        ]);
+        $podatak->refresh();
+
+        $this->assertSame('1111-2222-3333-4444', $podatak->value);
     }
 
     public function test_invalid_podatak_is_rejected(): void

@@ -25,6 +25,8 @@ class Dokument extends Model
     protected function casts(): array
     {
         return [
+            'name' => 'encrypted',
+            'original_name' => 'encrypted',
             'file_size' => 'integer',
         ];
     }

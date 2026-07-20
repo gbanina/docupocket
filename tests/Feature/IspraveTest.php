@@ -124,15 +124,12 @@ class IspraveTest extends TestCase
 
         $response->assertRedirect(route('isprave', absolute: false));
 
-        $this->assertDatabaseHas('isprave', [
-            'user_id' => $user->id,
-            'name' => 'Osobna iskaznica',
-            'category' => 'identitet',
-            'note' => 'Test napomena',
-        ]);
-
         $isprava = Isprava::query()->firstOrFail();
 
+        $this->assertSame($user->id, $isprava->user_id);
+        $this->assertSame('Osobna iskaznica', $isprava->name);
+        $this->assertSame('identitet', $isprava->category);
+        $this->assertSame('Test napomena', $isprava->note);
         Storage::disk('public')->assertExists($isprava->front_image_path);
         Storage::disk('public')->assertExists($isprava->back_image_path);
     }
